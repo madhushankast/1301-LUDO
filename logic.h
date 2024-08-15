@@ -29,4 +29,6 @@ int sort(int *arr);
 
 int begin();
 
+int decideDirection();
+
 #endif

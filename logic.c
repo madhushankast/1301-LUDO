@@ -8,22 +8,26 @@ const char* players[4] = {"Yellow","Blue","Red","Green"};
 
 
 //pieces
-//0 - playercolor , 1 - pircenumber , 2 - position , 3 - captured , 4 - direction(0 - clockwise,1 - anticlockwise)
+//0 - playercolor , 1 - pircenumber , 2 - position , 3 - captured , 4 - direction(1 - clockwise,-1 - anticlockwise)
+//yellow pieces
 int piecey1[PDATA] = {YELLOW, PIECE1, BASE,0,0};
 int piecey2[PDATA] = {YELLOW, PIECE2, BASE,0,0};
 int piecey3[PDATA] = {YELLOW, PIECE3, BASE,0,0};
 int piecey4[PDATA] = {YELLOW, PIECE4, BASE,0,0};
 
+//blue pieces
 int pieceb1[PDATA] = {BLUE, PIECE1, BASE,0,0};
 int pieceb2[PDATA] = {BLUE, PIECE2, BASE,0,0};
 int pieceb3[PDATA] = {BLUE, PIECE3, BASE,0,0};
 int pieceb4[PDATA] = {BLUE, PIECE4, BASE,0,0};
 
+//red pieces
 int piecer1[PDATA] = {RED, PIECE1, BASE,0,0};
 int piecer2[PDATA] = {RED, PIECE2, BASE,0,0};
 int piecer3[PDATA] = {RED, PIECE3, BASE,0,0};
 int piecer4[PDATA] = {RED, PIECE4, BASE,0,0};
 
+//green pieces
 int pieceg1[PDATA] = {GREEN, PIECE1, BASE,0,0};
 int pieceg2[PDATA] = {GREEN, PIECE2, BASE,0,0};
 int pieceg3[PDATA] = {GREEN, PIECE3, BASE,0,0};
@@ -36,10 +40,11 @@ player player3 = {RED, 0, 0,"Red",'R',RX,RO,{piecer1,piecer2,piecer3,piecer4,}};
 player player4 = {GREEN, 0, 0,"Green",'G',GX,GO,{pieceg1,pieceg2,pieceg3,pieceg4,}};
 
 //the pointer array that pints to player structure variable
-player *playerlsit[4] = {&player1,&player2,&player3,&player4};
+player *arrayplayerlist[4] = {&player1,&player2,&player3,&player4};
 
 //function to that irretative the player loop 
 void gamerun(int, int);
+int decideDirection();
 
 //check the relevant piece can come to the starting cell
 //must roll 6 to come and if there any pieces in standard path move them 
@@ -70,9 +75,10 @@ int firstroll(int i);
 void printvalues(int *ptr);
 
 // sorting and find order of value and sorting players by values in same array
+int begin();
 int sort(int *arr);
 int LUDO();
-int begin();
+
 
 int LUDO()
 {
@@ -120,7 +126,7 @@ void printvalues(int *ptr)
 {
     // int* ptr = arr;
     printf("%s player has the highest roll and will begin the game\n", players[*(ptr + 3)]);
-    printf("The order of a single round is %s, %s, %s, and %s\n", players[*(ptr + 3)], players[*(ptr + 2)], players[*(ptr + 1)], players[*(ptr)]);
+    printf("The rolled dise value order is %s, %s, %s, and %s\n", players[*(ptr + 3)], players[*(ptr + 2)], players[*(ptr + 1)], players[*(ptr)]);
 }
 
 int sort(int *arr)
@@ -150,12 +156,12 @@ int sort(int *arr)
         }
     }
 
-    for (int i = 0; i < 4; i++)
-    {
-        // printf("arr %d\t",arr[i]);
-        // printf("%d\t",sortplayer[i]);
-    }
-    printf("\n");
+    // for (int i = 0; i < 4; i++)
+    // {
+    //     printf("arr %d\t",arr[i]);
+    //     printf("%d\t",sortplayer[i]);
+    // }
+    // printf("\n");
 
     printvalues(ptr);
     // printf("%d\t",sortplayer[3]);
@@ -182,7 +188,7 @@ void gamerun(int starter, int endpieces)
     {
         starter = starter % 4;
         play[i] = starter;
-        printf("game run %d\n",starter);
+        //printf("game run %d\n",starter);
         starter++;
         // printf("%d\n",play[i]);
     }
@@ -300,21 +306,22 @@ char checkcometox(player* player,int x)
     {   
             for(int i = 0;i<4;i++)
             {
-                if(*(player->forpieces[i]+2) == BASE)
+                if((player->forpieces[i][2]) == BASE)
                 {
                     printf("Player rolled %d and piece %c%d came to X mark in standard path\n", x,player->colorfirst,i+1);
                     (player->started)++;
                     player->forpieces[i][2] = player->x;
-                    //printf("Started = %d\n",player->started);
+                    //store direction in pieces array[4]
+                    player->forpieces[i][4] = decideDirection();
+                    printf("Passing to Next player\n");
                     return 'x';
                 }
             }
     }
     else if((player->started<4) && (player->started>0))
     {
-        printf("came%d\n",x);
         standmove(player,x);
-        printf("passed%d\n",x);
+        printf("Passing to Next player\n");
         return x;
     }
     else
@@ -326,22 +333,51 @@ char checkcometox(player* player,int x)
 void standmove(player* player,int x)
 {
     A:
-    int randomp = randompiece();
-    if(randomp>=player->started)
+    int randomplayer = randompiece();
+    if(randomplayer>=player->started)
     {
         goto A;
     }
-    printf("%s -> %c%d moved from %d",player->color,player->colorfirst,randomp,player->forpieces[randomp][2]);
-    player->forpieces[randomp][2] = player->forpieces[randomp][2]+x;
-    if(player->forpieces[randomp][2]>51)
+    if(player->forpieces[randomplayer][4]==1)
     {
-        player->forpieces[randomp][2]=(player->forpieces[randomp][2])%52;
+        printf("%s -> %c%d moved from %d",player->color,player->colorfirst,randomplayer,player->forpieces[randomplayer][2]);
+        //player->forpieces[randomplayer][2] = player->forpieces[randomplayer][2]+x;
+        //if(player->forpieces[randomplayer][2]>51)
+        //{
+            player->forpieces[randomplayer][2]=((player->forpieces[randomplayer][2])+x)%52;
+        //}
+        printf("to %d clockwise direction\n",player->forpieces[randomplayer][2]);
     }
-    printf("to %d\n",player->forpieces[randomp][2]);
+    else if(player->forpieces[randomplayer][4]==-1)
+    {
+        printf("%s -> %c%d moved from %d",player->color,player->colorfirst,randomplayer,player->forpieces[randomplayer][2]);
+        //player->forpieces[randomplayer][2] = player->forpieces[randomplayer][2]+x;
+
+        player->forpieces[randomplayer][2]= 52 - (((player->forpieces[randomplayer][2])+x)%52);
+        printf("to %d anti-clockwise direction\n",player->forpieces[randomplayer][2]);
+
+    }
+
 
 }
 
-// int main()
+int decideDirection()
+{
+    int x = (rand()%2);
+    if(x==0)
+    {
+        printf("A coin is tossed, landed HEAD\n");
+        printf("Piese is moving clockwise direction\n");
+        return 1;
+    }
+    else
+    {
+        printf("A coin is tossed, landed TAIL\n");
+        printf("Piese is rolling Anti-clockwise direction\n");
+        return -1;
+    }
+}
+//int main()
 // {
-//     LUDO();
-// }
+//    LUDO();
+//}
