@@ -1,66 +1,86 @@
 #include <stdio.h>
 #include <stdlib.h>
+//#include <stdbool.h>
 #include <time.h>
 #include "type.h"
 
+const char *players[4] = {"Yellow", "Blue", "Red", "Green"};
 
-const char* players[4] = {"Yellow","Blue","Red","Green"};
+// pieces
+// 0 - playercolor , 1 - pircenumber , 2 - position , 3 - captured , 4 - direction(1 - clockwise,-1 - anticlockwise)
+// yellow pieces
+int piecey1[PDATA] = {YELLOW, PIECE1, BASE, 0, 0};
+int piecey2[PDATA] = {YELLOW, PIECE2, BASE, 0, 0};
+int piecey3[PDATA] = {YELLOW, PIECE3, BASE, 0, 0};
+int piecey4[PDATA] = {YELLOW, PIECE4, BASE, 0, 0};
 
+// blue pieces
+int pieceb1[PDATA] = {BLUE, PIECE1, BASE, 0, 0};
+int pieceb2[PDATA] = {BLUE, PIECE2, BASE, 0, 0};
+int pieceb3[PDATA] = {BLUE, PIECE3, BASE, 0, 0};
+int pieceb4[PDATA] = {BLUE, PIECE4, BASE, 0, 0};
 
-//pieces
-//0 - playercolor , 1 - pircenumber , 2 - position , 3 - captured , 4 - direction(1 - clockwise,-1 - anticlockwise)
-//yellow pieces
-int piecey1[PDATA] = {YELLOW, PIECE1, BASE,0,0};
-int piecey2[PDATA] = {YELLOW, PIECE2, BASE,0,0};
-int piecey3[PDATA] = {YELLOW, PIECE3, BASE,0,0};
-int piecey4[PDATA] = {YELLOW, PIECE4, BASE,0,0};
+// red pieces
+int piecer1[PDATA] = {RED, PIECE1, BASE, 0, 0};
+int piecer2[PDATA] = {RED, PIECE2, BASE, 0, 0};
+int piecer3[PDATA] = {RED, PIECE3, BASE, 0, 0};
+int piecer4[PDATA] = {RED, PIECE4, BASE, 0, 0};
 
-//blue pieces
-int pieceb1[PDATA] = {BLUE, PIECE1, BASE,0,0};
-int pieceb2[PDATA] = {BLUE, PIECE2, BASE,0,0};
-int pieceb3[PDATA] = {BLUE, PIECE3, BASE,0,0};
-int pieceb4[PDATA] = {BLUE, PIECE4, BASE,0,0};
+// green pieces
+int pieceg1[PDATA] = {GREEN, PIECE1, BASE, 0, 0};
+int pieceg2[PDATA] = {GREEN, PIECE2, BASE, 0, 0};
+int pieceg3[PDATA] = {GREEN, PIECE3, BASE, 0, 0};
+int pieceg4[PDATA] = {GREEN, PIECE4, BASE, 0, 0};
 
-//red pieces
-int piecer1[PDATA] = {RED, PIECE1, BASE,0,0};
-int piecer2[PDATA] = {RED, PIECE2, BASE,0,0};
-int piecer3[PDATA] = {RED, PIECE3, BASE,0,0};
-int piecer4[PDATA] = {RED, PIECE4, BASE,0,0};
+// players
+player player1 = {YELLOW, 0, 0, "Yellow", 'Y', YX, YO, {
+                                                           piecey1,
+                                                           piecey2,
+                                                           piecey3,
+                                                           piecey4,
+                                                       }};
+player player2 = {BLUE, 0, 0, "Blue", 'B', BX, BO, {
+                                                       pieceb1,
+                                                       pieceb2,
+                                                       pieceb3,
+                                                       pieceb4,
+                                                   }};
+player player3 = {RED, 0, 0, "Red", 'R', RX, RO, {
+                                                     piecer1,
+                                                     piecer2,
+                                                     piecer3,
+                                                     piecer4,
+                                                 }};
+player player4 = {GREEN, 0, 0, "Green", 'G', GX, GO, {
+                                                         pieceg1,
+                                                         pieceg2,
+                                                         pieceg3,
+                                                         pieceg4,
+                                                     }};
 
-//green pieces
-int pieceg1[PDATA] = {GREEN, PIECE1, BASE,0,0};
-int pieceg2[PDATA] = {GREEN, PIECE2, BASE,0,0};
-int pieceg3[PDATA] = {GREEN, PIECE3, BASE,0,0};
-int pieceg4[PDATA] = {GREEN, PIECE4, BASE,0,0};
+// the pointer array that pints to player structure variable
+player *arrayplayerlist[4] = {&player1, &player2, &player3, &player4};
 
-//players
-player player1 = {YELLOW, 0, 0,"Yellow",'Y',YX,YO,{piecey1,piecey2,piecey3,piecey4,}};
-player player2 = {BLUE, 0, 0,"Blue",'B',BX,BO,{pieceb1,pieceb2,pieceb3,pieceb4,}};
-player player3 = {RED, 0, 0,"Red",'R',RX,RO,{piecer1,piecer2,piecer3,piecer4,}};
-player player4 = {GREEN, 0, 0,"Green",'G',GX,GO,{pieceg1,pieceg2,pieceg3,pieceg4,}};
-
-//the pointer array that pints to player structure variable
-player *arrayplayerlist[4] = {&player1,&player2,&player3,&player4};
-
-//function to that irretative the player loop 
+// function to that irretative the player loop
 void gamerun(int, int);
 int decideDirection();
+int checkcatch(player *player, int randomplaypiece);
 
-//check the relevant piece can come to the starting cell
-//must roll 6 to come and if there any pieces in standard path move them 
-char checkcometox(player*,int);
+// check the relevant piece can come to the starting cell
+// must roll 6 to come and if there any pieces in standard path move them
+char checkcometox(player *, int);
 
-//call four players move
+// call four players move
 void move(int);
 
-//move make to random pieces
+// move make to random pieces
 int randompiece();
 
-//checking position
+// checking position
 int checkpos(int);
 
-//standard move of players after getting standard path
-void standmove(player* player,int x);
+// standard move of players after getting standard path
+void standmove(player *player, int x);
 
 // begining
 void printbegin();
@@ -79,10 +99,9 @@ int begin();
 int sort(int *arr);
 int LUDO();
 
-
 int LUDO()
 {
-    
+
     srand(time(0));
     printbegin();
     int starter;
@@ -188,7 +207,7 @@ void gamerun(int starter, int endpieces)
     {
         starter = starter % 4;
         play[i] = starter;
-        //printf("game run %d\n",starter);
+        // printf("game run %d\n",starter);
         starter++;
         // printf("%d\n",play[i]);
     }
@@ -221,59 +240,141 @@ void gamerun(int starter, int endpieces)
 void move(int pl)
 {
     int x = 0;
+    // to track roll count
+    int rolled6 = 0;
     switch (pl)
     {
-    case 0  :   x = roll();
-                printf("Yellow player rolled %d\n", x);
-                // if(x==6)
-                // {
-                //     //checksix();
-                // }
-                if(player1.started<4 && player1.finished<4)
-                {
-                    checkcometox(&player1,x);
-                }
-                else if(player1.started==4 && player1.finished<4)
-                {
-                    standmove(&player1,x);
-                }
-                
+    case 0:
+    ROLLY:
+        x = roll();
+        printf("Yellow player rolled %d\n", x);
+
+        if (player1.started < 4 && player1.finished < 4)
+        {
+            checkcometox(&player1, x);
+        }
+        else if (player1.started == 4 && player1.finished < 4)
+        {
+            standmove(&player1, x);
+        }
+        if (x == 6 && rolled6 < 2)
+        {
+            printf("Rolled 6 so player gets another roll\n");
+            rolled6++;
+            goto ROLLY;
+        }
+        else if (x == 6 && rolled6 == 2)
+        {
+            printf("Rolled 6 3 times rolle canceled\n");
+            rolled6 = 0;
+        }
+        else
+        {
+            rolled6 = 0;
+        }
+        // checkcatch(arrayplayerlist[0]);
+        printf("Passing to Next player\n");
+        printf("\n");
+
         break;
-    case 1:     x = roll();
-                printf("Blue player rolled %d\n", x);
-                if(player2.started<4 && player2.finished<4)
-                {
-                    checkcometox(&player2,x);
-                }
-                else if(player2.started==4 && player1.finished<4)
-                {
-                    standmove(&player2,x);
-                }
-                
+    case 1:
+    ROLLB:
+        x = roll();
+        printf("Blue player rolled %d\n", x);
+        if (player2.started < 4 && player2.finished < 4)
+        {
+            checkcometox(&player2, x);
+        }
+        else if (player2.started == 4 && player1.finished < 4)
+        {
+            standmove(&player2, x);
+        }
+
+        if (x == 6 && rolled6 < 2)
+        {
+            printf("Rolled 6 so player gets another roll\n");
+            rolled6++;
+            // go to rule 256
+            goto ROLLB;
+        }
+        else if (x == 6 && rolled6 == 2)
+        {
+            printf("Rolled 6, 3 times roll canceled\n");
+            rolled6 = 0;
+        }
+        else
+        {
+            rolled6 = 0;
+        }
+        // checkcatch(arrayplayerlist[1]);
+        printf("Passing to Next player\n");
+        printf("\n");
+
         break;
-    case 2:     x = roll();
-                printf("Red player rolled %d\n", x);
-                if(player3.started<4 && player3.finished<4)
-                {
-                    checkcometox(&player3,x);
-                }
-                else if(player3.started==4 && player1.finished<4)
-                {
-                    standmove(&player3,x);
-                }
-                
+    case 2:
+    ROLLR:
+        x = roll();
+        printf("Red player rolled %d\n", x);
+        if (player3.started < 4 && player3.finished < 4)
+        {
+            checkcometox(&player3, x);
+        }
+        else if (player3.started == 4 && player1.finished < 4)
+        {
+            standmove(&player3, x);
+        }
+
+        if (x == 6 && rolled6 < 2)
+        {
+            printf("Rolled 6 so player gets another roll\n");
+            rolled6++;
+            goto ROLLR;
+        }
+        else if (x == 6 && rolled6 == 2)
+        {
+            printf("Rolled 6 3 times rolle canceled\n");
+            rolled6 = 0;
+        }
+        else
+        {
+            rolled6 = 0;
+        }
+        // checkcatch(arrayplayerlist[2]);
+        printf("Passing to Next player\n");
+        printf("\n");
+
         break;
-    case 3:     x = roll();
-                printf("Green player rolled %d\n", x);
-                if(player4.started<4 && player4.finished<4)
-                {
-                    checkcometox(&player4,x);
-                }
-                else if(player4.started==4 && player1.finished<4)
-                {
-                    standmove(&player4,x);
-                }
-                
+    case 3:
+    ROLLG:
+        x = roll();
+        printf("Green player rolled %d\n", x);
+        if (player4.started < 4 && player4.finished < 4)
+        {
+            checkcometox(&player4, x);
+        }
+        else if (player4.started == 4 && player1.finished < 4)
+        {
+            standmove(&player4, x);
+        }
+        if (x == 6 && rolled6 < 2)
+        {
+            printf("Rolled 6 so player gets another roll\n");
+            rolled6++;
+            goto ROLLG;
+        }
+        else if (x == 6 && rolled6 == 2)
+        {
+            printf("Rolled 6 3 times rolle canceled\n");
+            rolled6 = 0;
+        }
+        else
+        {
+            rolled6 = 0;
+        }
+        // checkcatch(arrayplayerlist[3]);
+        printf("Passing to Next player\n");
+        printf("\n");
+
         break;
     }
 }
@@ -292,79 +393,90 @@ int checkpos(int pos)
     return pos;
 }
 
-//firstly to come to x if all in standard area then move
-char checkcometox(player* player,int x)
+// firstly to come to x if all in standard area then move
+char checkcometox(player *player, int x)
 {
-    if((player->started==0) && (x!=6))
-   {
-        printf("%s must roll 6 to move pieces to X but player rolled %d\n",player->color, x);
-        printf("Passing to Next player\n");
+    if ((player->started == 0) && (x != 6))
+    {
+        printf("%s must roll 6 to move pieces to X but player rolled %d\n", player->color, x);
         return x;
     }
-    
-    else if((player->started<4) && (x ==6))
-    {   
-            for(int i = 0;i<4;i++)
-            {
-                if((player->forpieces[i][2]) == BASE)
-                {
-                    printf("Player rolled %d and piece %c%d came to X mark in standard path\n", x,player->colorfirst,i+1);
-                    (player->started)++;
-                    player->forpieces[i][2] = player->x;
-                    //store direction in pieces array[4]
-                    player->forpieces[i][4] = decideDirection();
-                    printf("Passing to Next player\n");
-                    return 'x';
-                }
-            }
-    }
-    else if((player->started<4) && (player->started>0))
+
+    else if ((player->started < 4) && (x == 6))
     {
-        standmove(player,x);
-        printf("Passing to Next player\n");
+        for (int i = 0; i < 4; i++)
+        {
+            if ((player->forpieces[i][2]) == BASE)
+            {
+                printf("Player rolled %d and piece %c%d came to X mark in standard path\n", x, player->colorfirst, i + 1);
+                (player->started)++;
+                player->forpieces[i][2] = player->x;
+                // store direction in pieces array[4]
+                player->forpieces[i][4] = decideDirection();
+                return 'x';
+            }
+        }
+    }
+    else if ((player->started < 4) && (player->started > 0))
+    {
+        standmove(player, x);
         return x;
     }
     else
     {
-         printf("Else part Player can move by %d\n",x);
+        printf("Else part Player can move by %d\n", x);
     }
 }
 
-void standmove(player* player,int x)
+void standmove(player *player, int x)
 {
+// selecting player randomplt has to implement player AIs
     A:
-    int randomplayer = randompiece();
-    if(randomplayer>=player->started)
+    int randomplaypiece = randompiece();
+    if (randomplaypiece >= player->started)
     {
         goto A;
     }
-    if(player->forpieces[randomplayer][4]==1)
+    if (player->forpieces[randomplaypiece][4] == 1)
     {
-        printf("%s -> %c%d moved from %d",player->color,player->colorfirst,randomplayer,player->forpieces[randomplayer][2]);
-        //player->forpieces[randomplayer][2] = player->forpieces[randomplayer][2]+x;
-        //if(player->forpieces[randomplayer][2]>51)
-        //{
-            player->forpieces[randomplayer][2]=((player->forpieces[randomplayer][2])+x)%52;
-        //}
-        printf("to %d clockwise direction\n",player->forpieces[randomplayer][2]);
+        printf("%s -> %c%d moved from %d",
+               player->color,
+               player->colorfirst,
+               randomplaypiece,
+               player->forpieces[randomplaypiece][2]);
+        // player->forpieces[randomplayer][2] = player->forpieces[randomplayer][2]+x;
+        player->forpieces[randomplaypiece][2] = ((player->forpieces[randomplaypiece][2]) + x) % 52;
+        printf("to %d clockwise direction\n", player->forpieces[randomplaypiece][2]);
+        checkcatch(player, randomplaypiece);
     }
-    else if(player->forpieces[randomplayer][4]==-1)
+    else if (player->forpieces[randomplaypiece][4] == -1)
     {
-        printf("%s -> %c%d moved from %d",player->color,player->colorfirst,randomplayer,player->forpieces[randomplayer][2]);
-        //player->forpieces[randomplayer][2] = player->forpieces[randomplayer][2]+x;
-
-        player->forpieces[randomplayer][2]= 52 - (((player->forpieces[randomplayer][2])+x)%52);
-        printf("to %d anti-clockwise direction\n",player->forpieces[randomplayer][2]);
-
+        printf("%s -> %c%d moved from %d ",
+               player->color,
+               player->colorfirst,
+               randomplaypiece,
+               player->forpieces[randomplaypiece][2]);
+        // player->forpieces[randomplayer][2] = player->forpieces[randomplayer][2]+x;
+        // int temp;
+        // temp = (temp - x) % 52;
+        player->forpieces[randomplaypiece][2] = player->forpieces[randomplaypiece][2] - x;
+        if (player->forpieces[randomplaypiece][2] <= 0)
+        {
+            player->forpieces[randomplaypiece][2] = 51 + player->forpieces[randomplaypiece][2];
+        }
+        printf("to %d anti-clockwise direction\n", player->forpieces[randomplaypiece][2]);
+        if (checkcatch (player, randomplaypiece))
+        {
+            goto A;
+        }
+        // checkblock;
     }
-
-
 }
 
 int decideDirection()
 {
-    int x = (rand()%2);
-    if(x==0)
+    int x = (rand() % 2);
+    if (x == 0)
     {
         printf("A coin is tossed, landed HEAD\n");
         printf("Piese is moving clockwise direction\n");
@@ -377,7 +489,39 @@ int decideDirection()
         return -1;
     }
 }
-//int main()
-// {
-//    LUDO();
-//}
+
+int checkcatch(player *player, int randomplaypiece)
+{
+    for (int j = 0; j < 3; j++)
+    {
+        for (int k = 0; k < 3; k++)
+        {
+            if ( // cheking possibles pieces catches when a move was make
+                player != arrayplayerlist[j] &&
+                player->forpieces[randomplaypiece][2] != (YX || BX || RX || GX) &&
+                (player->forpieces[randomplaypiece][2] != BASE) &&
+                ((arrayplayerlist[j])->forpieces[j][k] != BASE) &&
+                (player->forpieces[randomplaypiece][2] == arrayplayerlist[j]->forpieces[j][k]))
+            {
+                printf("%s player %c%d piece captures %s player's %c%d piece at %d position\n",
+                       player->color,
+                       player->colorfirst,
+                       randomplaypiece,
+                       arrayplayerlist[j]->color,
+                       arrayplayerlist[j]->colorfirst,
+                       k,
+                       player->forpieces[randomplaypiece][2]);
+
+                printf("%s player's %c%d piece send to BASE\n",
+                       arrayplayerlist[j]->color,
+                       arrayplayerlist[j]->colorfirst,
+                       k);
+                       return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+}

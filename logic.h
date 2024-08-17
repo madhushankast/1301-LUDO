@@ -31,4 +31,6 @@ int begin();
 
 int decideDirection();
 
+int checkcatch(player *player,int randomplaypiece);
+
 #endif
