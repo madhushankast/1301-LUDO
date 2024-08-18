@@ -23,8 +23,18 @@
 #define PIECE3 3
 #define PIECE4 4
 
+//teleport
+#define BHAWANA 7
+#define KOTUWA 25
+#define PITAKOTUWA 44
+#define ENERGIZE 2
+#define SICK 0.5
+#define FORROUND 4 
+
+
+
 //data count one piece holds
-#define PDATA 5
+#define PDATA 7
 
 extern const char* players[4];
 //extern struct player *playerlist[4];
@@ -57,6 +67,13 @@ typedef struct player
     int *forpieces[4];
 }player;
 
+// typedef struct blockad
+// {
+//     int playernum;
+//     int blockadPieces[4];
+//     int blockaedPosition;
+//     int pieceCount;
+// }blockad;
 
 
 

@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #ifndef LOGIC_H
 #define LOGIC_H
 
@@ -11,7 +12,7 @@ void move(int);
 
 char checkcometox(player*,int);
 
-void standmove(player* player,int x);
+int standmove(player *player, int y,int playpiece);
 
 int randompiece();
 
@@ -31,6 +32,17 @@ int begin();
 
 int decideDirection();
 
-int checkcatch(player *player,int randomplaypiece);
+int checkcatch(player *player);
+
+void createBlocks(player *player, int randomplaypiece);
+
+void telport(player* player,int randomplaypiece,int onmistry);
+
+bool isMistry(int canmistry);
+
+void redcatch(int x);
+void yellowcatch(int x);
+
+void printround();
 
 #endif
