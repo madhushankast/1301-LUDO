@@ -2,14 +2,15 @@
 #define TYPE_H
 
 //X value and O value in standard path starting from yellow x
-#define YX 0
-#define YO 50
-#define BX 13
-#define BO 11
-#define RX 26
-#define RO 24
-#define GX 39
-#define GO 37
+#define YO 0
+#define YX 2
+#define BO 13
+#define BX 15
+#define RO 26
+#define RX 28
+#define GO 39
+#define GX 41
+
 #define BASE -1
 #define FINISH 100
 
@@ -18,10 +19,10 @@
 #define RED 2
 #define GREEN 3
 
-#define PIECE1 1
-#define PIECE2 2
-#define PIECE3 3
-#define PIECE4 4
+#define PIECE1 0
+#define PIECE2 1
+#define PIECE3 2
+#define PIECE4 3
 
 //teleport
 #define BHAWANA 7
@@ -34,7 +35,7 @@
 
 
 //data count one piece holds
-#define PDATA 7
+#define PDATA 8
 
 extern const char* players[4];
 //extern struct player *playerlist[4];
@@ -56,7 +57,7 @@ extern const char* players[4];
 typedef struct player
 {
     //defined by array number
-    //yellow = 0,blue = 1,red = 2 green = 3,
+    //yellow = 1,blue = 2,red = 3 green = 4,
     int playernum;
     int started;
     int finished;
@@ -64,6 +65,7 @@ typedef struct player
     char colorfirst;
     int x;
     int o;
+    int sixrolled;
     int *forpieces[4];
 }player;
 
