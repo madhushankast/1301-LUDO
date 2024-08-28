@@ -26,12 +26,13 @@
 #define PIECE4 3
 
 //teleport
-#define BHAWANA 7
-#define KOTUWA 25
-#define PITAKOTUWA 44
+#define BHAWANA 9
+#define KOTUWA 27
+#define PITAKOTUWA 46
 #define ENERGIZE 2
 #define SICK 0.5
-#define FORROUND 4 
+#define FOURROUND 4 
+#define FREEZE 0
 
 
 
@@ -60,8 +61,8 @@ typedef struct player
     //defined by array number
     //yellow = 0,blue = 1,red = 2 green = 3,
     int playernum;
+    int inBase;
     int started;
-    int inPlay;
     int finished;
     char *color;
     char colorfirst;

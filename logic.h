@@ -38,13 +38,13 @@ int checkpos(int);
 
 int coinToss();
 
-int captured(player *player,int playedpiece);
+int captured(player *player,int playpiece);
 
 bool canCaptureAny(int);
 
 int createBlocks(player *player, int randomplaypiece);
 
-void telport(player* player,int randomplaypiece,int onmistry);
+void teleport(player* player,int randomplaypiece,int onmistry);
 
 bool canBeMistry(int mistryIs);
 
@@ -69,7 +69,7 @@ int greenPlayPiece();
 bool isPiecelocated(int mistryis);
 
 
-bool isHome(player *player,int playedpiece,int roll);
+bool isHome(player *player,int playpiece,int roll);
 
 void homeMove(player *player,int playpiece,int roll);
 

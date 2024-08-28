@@ -26,12 +26,12 @@
 #define PIECE4 3
 
 //teleport
-#define BHAWANA 7
-#define KOTUWA 25
-#define PITAKOTUWA 44
+#define BHAWANA 9
+#define KOTUWA 27
+#define PITAKOTUWA 46
 #define ENERGIZE 2
 #define SICK 0.5
-#define FORROUND 4 
+#define FOURROUND 4 
 
 
 
