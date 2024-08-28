@@ -18,13 +18,19 @@ void printvalues(int *ptr);
 
 //int sort(int *arr);
 
+void yellowMove();
+
+void blueMove();
+
+void redMove();
+
+void greenMove();
+
 void gameplay(int);
 
-void move(int);
+void baseToStart(player*);
 
-char checkcometox(player*,int);
-
-int standmove(player *player, short y);
+int standmove(player *player, int y);
 
 int selectPlayPiece(player *player,int x);
 
@@ -34,7 +40,7 @@ int coinToss();
 
 int captured(player *player,int playedpiece);
 
-bool cancaptured(player *player,int x);
+bool canCaptureAny(int);
 
 int createBlocks(player *player, int randomplaypiece);
 
@@ -42,19 +48,30 @@ void telport(player* player,int randomplaypiece,int onmistry);
 
 bool canBeMistry(int mistryIs);
 
-bool redcatch(short x);
+int capturedOutput();
 
-void yellowcatch(int x);
+int redcatch(int);
 
-void printround();
+bool yellowcatch(int);
 
-int yellowPlayPiece(player *player,int x);
+bool greencatch(int);
+
+void printRound();
+
+int yellowPlayPiece(int);
 
 int bluePlayPiece(int x);
 
 int redPlayPiece();
 
+int greenPlayPiece();
+
 bool isPiecelocated(int mistryis);
+
+
+bool isHome(player *player,int playedpiece,int roll);
+
+void homeMove(player *player,int playpiece,int roll);
 
 
 #endif

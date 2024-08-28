@@ -12,6 +12,7 @@
 #define GX 41
 
 #define BASE -1
+#define HOME 60
 #define FINISH 100
 
 #define YELLOW 0
@@ -35,7 +36,7 @@
 
 
 //data count one piece holds
-#define PDATA 8
+#define PDATA 10
 
 extern const char* players[4];
 //extern struct player *playerlist[4];
@@ -57,9 +58,10 @@ extern const char* players[4];
 typedef struct player
 {
     //defined by array number
-    //yellow = 1,blue = 2,red = 3 green = 4,
+    //yellow = 0,blue = 1,red = 2 green = 3,
     int playernum;
     int started;
+    int inPlay;
     int finished;
     char *color;
     char colorfirst;
