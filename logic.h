@@ -14,8 +14,6 @@ int firstroll(int i);
 
 int firstHand();
 
-void printvalues(int *ptr);
-
 //int sort(int *arr);
 
 void yellowMove();
