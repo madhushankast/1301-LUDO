@@ -2,6 +2,7 @@
     "files.associations": {
         "type.h": "c",
         "stdio.h": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "logic.h": "c"
     }
 }

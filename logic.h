@@ -6,6 +6,7 @@
 
 int LUDO();
 
+
 void printbegin();
 
 int roll();
