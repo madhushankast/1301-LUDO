@@ -75,7 +75,7 @@ int mistrycell;
 int blueOrder = 0;
 int redorder = 0;
 int greenorder = 0;
-int playpiece;
+//int playpiece;
 
 // output the begining statmenet and player order
 int LUDO()
@@ -92,6 +92,8 @@ int LUDO()
 
     // passing starting player and endpieces count
     gameplay(startPlayer);
+
+    printf("ENDGAME\n");
     return 1;
 }
 
@@ -194,8 +196,14 @@ void gameplay(int starter)
 
     int round = 1;
 
-    while (endpieces <= 16)
+    while (endpieces < 13 )
     {
+    
+    // while (1) {
+    //     if ( getchar()) { // '\r' is the Enter key
+            printf("Code is running...\n");
+            // Place your code here
+
             printf("This is round ----> %d\n", round++);
 
             // repeating the players order
@@ -225,7 +233,11 @@ void gameplay(int starter)
                 do
                 {
                     mistryIs = rand() % 52;
-                } while (0); //(!canBeMistry(mistryIs));
+                    if(canBeMistry(mistryIs))
+                    {
+                        break;
+                    }
+                } while (0); 
 
                 mistrycell = mistryIs;
                 // printf("mistry cell on %d\n", mistrycell);
@@ -239,12 +251,28 @@ void gameplay(int starter)
                         mistrycell,
                         4-(round%4));
         }
+//         break;
+//     }
+//
+
+        for(int i=0;i<4;i++)
+        {
+            if(arrayplayerlist[i]->finished ==4)
+            {
+                printf("%s wins game\n",arrayplayerlist[i]->color);
+                return;
+            }
+        }
     }
 }
 
 
 void yellowMove()
 {
+    if(player1.finished == 4)
+    {
+        return;
+    }
     while(1)
     {
 
@@ -527,37 +555,37 @@ void printRound()
         printf("=====================================================================================\n");
         for (int i = 0; i < 4; i++)
         {
-            if (arrayplayerlist[j]->forpieces[i][2] == BASE)
+            if (arrayplayerlist[j]->pieceDeatail[i][2] == BASE)
             {
-                printf("%c%d -> Base\tcaptured - %d\tTravelled - %d\tDirection - %d\tHome - %d\n",
+                printf("%c%d -> Base\tcaptured - %d\tTravelled - %d\tDirection - %d\tHome L=%d\n",
                 arrayplayerlist[j]->colorfirst,
-                arrayplayerlist[j]->forpieces[i][1],
-                arrayplayerlist[j]->forpieces[i][3],
-                arrayplayerlist[j]->forpieces[i][7],
-                arrayplayerlist[j]->forpieces[i][4],
-                arrayplayerlist[j]->forpieces[i][8]);
+                arrayplayerlist[j]->pieceDeatail[i][1],
+                arrayplayerlist[j]->pieceDeatail[i][3],
+                arrayplayerlist[j]->pieceDeatail[i][7],
+                arrayplayerlist[j]->pieceDeatail[i][4],
+                arrayplayerlist[j]->pieceDeatail[i][8]);
             }
-            else if(arrayplayerlist[j]->forpieces[i][2] == FINISH)
+            else if(arrayplayerlist[j]->pieceDeatail[i][8] >= 6)
             {
-                printf("%c%d -> Home\tcaptured - %d\tTravelled - %d\tDirection - %d\tHome - %d\n",
+                printf("%c%d -> Home\tcaptured - %d\tTravelled - %d\tDirection - %d\tHome L= %d\n",
                 arrayplayerlist[j]->colorfirst,
-                arrayplayerlist[j]->forpieces[i][1],
-                arrayplayerlist[j]->forpieces[i][3],
-                arrayplayerlist[j]->forpieces[i][7],
-                arrayplayerlist[j]->forpieces[i][4],
-                arrayplayerlist[j]->forpieces[i][8]);
+                arrayplayerlist[j]->pieceDeatail[i][1],
+                arrayplayerlist[j]->pieceDeatail[i][3],
+                arrayplayerlist[j]->pieceDeatail[i][7],
+                arrayplayerlist[j]->pieceDeatail[i][4],
+                arrayplayerlist[j]->pieceDeatail[i][8]);
 
             }
             else
             {
-                printf("%c%d is at L%d\tcaptured - %d\tTravelled - %d\tDirection - %d\tHome - %d\n",
+                printf("%c%d is at L%d\tcaptured - %d\tTravelled - %d\tDirection - %d\tHome L= %d\n",
                 arrayplayerlist[j]->colorfirst,
-                arrayplayerlist[j]->forpieces[i][1],
-                arrayplayerlist[j]->forpieces[i][2],
-                arrayplayerlist[j]->forpieces[i][3],
-                arrayplayerlist[j]->forpieces[i][7],
-                arrayplayerlist[j]->forpieces[i][4],
-                arrayplayerlist[j]->forpieces[i][8]);
+                arrayplayerlist[j]->pieceDeatail[i][1],
+                arrayplayerlist[j]->pieceDeatail[i][2],
+                arrayplayerlist[j]->pieceDeatail[i][3],
+                arrayplayerlist[j]->pieceDeatail[i][7],
+                arrayplayerlist[j]->pieceDeatail[i][4],
+                arrayplayerlist[j]->pieceDeatail[i][8]);
             }
         }
         printf("\n");
@@ -592,7 +620,7 @@ int selectPlayPiece(player *player, int diceValue)
 // firstly to come to x if all in standard area then move
 void baseToStart(player *player)
 {
-    if(player->finished ==4)
+    if(player->finished == 4)
     {
         return;
     }
@@ -601,7 +629,7 @@ void baseToStart(player *player)
     {
         for (int i = 0; i < 4; i++)
         {
-            if (player->forpieces[i][2] == BASE  && player->forpieces[i][8] != FINISH)
+            if (player->pieceDeatail[i][2] == BASE  && player->pieceDeatail[i][8] != FINISH)
             {
                 printf("%s player moves piece %c%d to the starting point\n",
                         player->color,
@@ -610,9 +638,9 @@ void baseToStart(player *player)
                 
                 player->started = player->started + 1;
                 player->inBase = player->inBase - 1;
-                player->forpieces[i][2] = player->x;
+                player->pieceDeatail[i][2] = player->x;
                 // store direction in pieces array[4]
-                player->forpieces[i][4] = coinToss();
+                player->pieceDeatail[i][4] = coinToss();
 
                 printf("%s player now has %d/4 on pieces on the board and %d/4 pieces on the base\n",
                         player->color,
@@ -643,37 +671,33 @@ int standmove(player *player, int roll)
 
     // for(int i =0;i<4;i++)
     // {
-    //     if(player->forpieces[i][8] >-1 && player->forpieces[i][8]+roll <= 6)
+    //     if(player->pieceDeatail[i][8] >-1 && player->pieceDeatail[i][8]+roll <= 6)
     //     {
     //         playpiece = i;
     //     }
     // }
     for(int i=0;i<4;i++)
     {
-        if(player->forpieces[i][8] > -1 && player->forpieces[i][8]+roll <= 6)
+        if(player->pieceDeatail[i][8] > -1 && player->pieceDeatail[i][8]+roll <= 6)
         {
             homeMove(player, i, roll);
             return 0;
         }
     }
 
-    do
-    {
-        playpiece = selectPlayPiece(player, roll);
+    playpiece = selectPlayPiece(player, roll);
         if(playpiece == -1)
         {
             return 0;
         }
-    }while(player->forpieces[playpiece][8] > -1);
     
 
-    if(player->forpieces[playpiece][8] == -1)
+    if(player->pieceDeatail[playpiece][8] == -1)
     {
 
-        if(isHome(player, playpiece, roll) &&          //can enter to the hoempath
-            player->forpieces[playpiece][7] > 2 &&      //must travelled more than two sells
-            player->forpieces[playpiece][3] > 0 &&      //must have captured at least one piece  
-            player->forpieces[playpiece][8] == -1)      //not already in the homepath
+        if(passApporoach(player, playpiece, roll) &&          //can enter to the hoempath
+            player->pieceDeatail[playpiece][7] > 2 &&      //must travelled more than two sells
+            player->pieceDeatail[playpiece][3] > 0 )      //must have captured at least one piece  )      //not already in the homepath
         {
             printf("------------------------------------------Homemove move\n");
 
@@ -682,68 +706,70 @@ int standmove(player *player, int roll)
         }
 
         // Bhawana impact & kotuwa impact+
-        if (player->forpieces[playpiece][5] != 1 )
+        if (player->pieceDeatail[playpiece][5] != 1 )
         {
-            roll = player->forpieces[playpiece][5] * roll;
-            player->forpieces[playpiece][6]--;
+            roll = player->pieceDeatail[playpiece][5] * roll;
+            player->pieceDeatail[playpiece][6]--;
 
-            if(player->forpieces[playpiece][5]==0)
+            if(player->pieceDeatail[playpiece][5]==0)
             {
                 //rolled consecutive three times
             }
 
-            if(player->forpieces[playpiece][6]==0)
+            if(player->pieceDeatail[playpiece][6]==0)
             {
-                player->forpieces[playpiece][5] = 1;
+                player->pieceDeatail[playpiece][5] = 1;
             }
         }
         // Kotuwa Impact
-        // if (player->forpieces[playpiece][6] > 0 && player->forpieces[playpiece][2] == KOTUWA)
+        // if (player->pieceDeatail[playpiece][6] > 0 && player->pieceDeatail[playpiece][2] == KOTUWA)
         // {
         //     printf("%s %c%d in KOTUWA cant move for next %d rounds\n",
         //         player->color,
         //         player->colorfirst,
-        //         player->forpieces[playpiece][1],
-        //         player->forpieces[playpiece][6]--);
+        //         player->pieceDeatail[playpiece][1],
+        //         player->pieceDeatail[playpiece][6]--);
         // }
 
         // selecting player randomplt has to implement player AIs
-        if (player->forpieces[playpiece][4] == 1)
+        if (player->pieceDeatail[playpiece][4] == 1)
         {
             printf("%s\tmoves %c%d from location\tL%d",
                 player->color,
                 player->colorfirst,
                 playpiece,
-                player->forpieces[playpiece][2]);
-            // player->forpieces[randomplayer][2] = player->forpieces[randomplayer][2]+x;
-            player->forpieces[playpiece][2] = ((player->forpieces[playpiece][2]) + roll) % 52;
-            printf("to L%d by units\t%d clockwise direction\n", player->forpieces[playpiece][2],roll);
+                player->pieceDeatail[playpiece][2]);
+            // player->pieceDeatail[randomplayer][2] = player->pieceDeatail[randomplayer][2]+x;
+            player->pieceDeatail[playpiece][2] = ((player->pieceDeatail[playpiece][2]) + roll) % 52;
+            printf("to L%d by units\t%d clockwise direction\n", player->pieceDeatail[playpiece][2],roll);
 
-            player->forpieces[playpiece][7] = player->forpieces[playpiece][7]+roll;
+            player->pieceDeatail[playpiece][7] = player->pieceDeatail[playpiece][7]+roll;
             // captured(player, randomplaypiece);
         }
 
-        else if (player->forpieces[playpiece][4] == -1)
+        else if (player->pieceDeatail[playpiece][4] == -1)
         {
             printf("%s\tmoves %c%d from location\tL%d",
                 player->color,
                 player->colorfirst,
                 playpiece,
-                player->forpieces[playpiece][2]);
+                player->pieceDeatail[playpiece][2]);
 
-            player->forpieces[playpiece][2] = player->forpieces[playpiece][2] - roll;
-            if (player->forpieces[playpiece][2] <= 0)
+            player->pieceDeatail[playpiece][2] = player->pieceDeatail[playpiece][2] - roll;
+            if (player->pieceDeatail[playpiece][2] <= 0)
             {
-                player->forpieces[playpiece][2] = 51 + player->forpieces[playpiece][2];
+                player->pieceDeatail[playpiece][2] = 51 + player->pieceDeatail[playpiece][2];
             }
-            printf("to L%d by units\t%d Counter-clockwise direction\n", player->forpieces[playpiece][2],roll);
+            printf("to L%d by units\t%d Counter-clockwise direction\n", player->pieceDeatail[playpiece][2],roll);
 
-            if (player->forpieces[playpiece][2] == (mistrycell))
-            {
-                teleport(player, playpiece, mistrycell);
-            }
+            player->pieceDeatail[playpiece][7] = player->pieceDeatail[playpiece][7]+roll;
         }
-        player->forpieces[playpiece][7] = player->forpieces[playpiece][7]+roll;
+
+        if (player->pieceDeatail[playpiece][2] == mistrycell)
+        {
+            mistryTeleport(player, playpiece);
+        }
+        
     }
     else
     {
@@ -775,24 +801,24 @@ int capturedOutput()
     printf("%s Player %c%d lands on square L%d,captures %s Player %c%d, and returns it to the base\n",
            arrayplayerlist[captureData[0]]->color,
            arrayplayerlist[captureData[0]]->colorfirst,
-           arrayplayerlist[captureData[0]]->forpieces[captureData[1]][1] + 1,
+           arrayplayerlist[captureData[0]]->pieceDeatail[captureData[1]][1] + 1,
            captureData[4],
            arrayplayerlist[captureData[2]]->color,
            arrayplayerlist[captureData[2]]->colorfirst,
-           arrayplayerlist[captureData[2]]->forpieces[captureData[3]][1] + 1);
+           arrayplayerlist[captureData[2]]->pieceDeatail[captureData[3]][1] + 1);
 
     //increment captured value of capturer
-    arrayplayerlist[captureData[0]]->forpieces[captureData[1]][3]++;
+    arrayplayerlist[captureData[0]]->pieceDeatail[captureData[1]][3]++;
     //decremrnting captured pieces started count and increment agian inBase count
     arrayplayerlist[captureData[2]]->inBase=arrayplayerlist[captureData[2]]->inBase+1;
     arrayplayerlist[captureData[2]]->started=arrayplayerlist[captureData[2]]->started-1;
     //captured pieces position to BASE
-    arrayplayerlist[captureData[2]]->forpieces[captureData[3]][2] = BASE;
+    arrayplayerlist[captureData[2]]->pieceDeatail[captureData[3]][2] = BASE;
     //captured pieces travelled value to zero
-    arrayplayerlist[captureData[2]]->forpieces[captureData[3]][7] = 0;
+    arrayplayerlist[captureData[2]]->pieceDeatail[captureData[3]][7] = 0;
     //captured pieces captured count to zero
-    arrayplayerlist[captureData[2]]->forpieces[captureData[3]][3] = 0;
-    arrayplayerlist[captureData[2]]->forpieces[captureData[3]][8] = -1;
+    arrayplayerlist[captureData[2]]->pieceDeatail[captureData[3]][3] = 0;
+    arrayplayerlist[captureData[2]]->pieceDeatail[captureData[3]][8] = -1;
 
 
     printf("%s player now has %d/4 on pieces on the board and %d/4 pieces on the base\n",
@@ -821,22 +847,23 @@ bool canCaptureAny(int player)
                 if ( // remove comparing same players pieces
                     arrayplayerlist[player] != arrayplayerlist[j] &&
                     // can not catch at starting position
-                    //  player->forpieces[i][2] != YX && player->forpieces[i][2] != BX &&
-                    //  player->forpieces[i][2] != RX && player->forpieces[i][2] != GX &&
+                    //  player->pieceDeatail[i][2] != YX && player->pieceDeatail[i][2] != BX &&
+                    //  player->pieceDeatail[i][2] != RX && player->pieceDeatail[i][2] != GX &&
                     //check if it in the homepath
-                    arrayplayerlist[j]->forpieces[k][8] == -1 &&
+                    arrayplayerlist[player]->pieceDeatail[i][8] == -1 &&
+                    //arrayplayerlist[player]->pieceDeatail[i][2] != FINISH &&
                     // removing in base pieces
-                    (arrayplayerlist[player]->forpieces[i][2] != BASE) &&
+                    arrayplayerlist[player]->pieceDeatail[i][2] != BASE &&
                     // removing oppenent pieces base pieces
-                    (arrayplayerlist[j]->forpieces[k][2] != BASE) &&
+                    //arrayplayerlist[j]->pieceDeatail[k][2] != BASE &&
                     // if they in a same block
-                    (arrayplayerlist[player]->forpieces[i][2] == arrayplayerlist[j]->forpieces[k][2]))
+                    arrayplayerlist[player]->pieceDeatail[i][2] == arrayplayerlist[j]->pieceDeatail[k][2])
                 {
                     captureData[0] = player;
                     captureData[1] = i;
                     captureData[2] = j;
                     captureData[3] = k;
-                    captureData[4] = arrayplayerlist[j]->forpieces[k][2];
+                    captureData[4] = arrayplayerlist[j]->pieceDeatail[k][2];
 
                     return true;
                 }
@@ -852,8 +879,8 @@ int createBlocks(player *player, int randomplaypiece)
     int blocksize = 0;
     for (int i = 0; i < 4; i++)
     {
-        if (((player->forpieces[randomplaypiece][2]) || (player->forpieces[i][2])) != BASE &&
-            player->forpieces[randomplaypiece][2] == player->forpieces[i][2])
+        if (((player->pieceDeatail[randomplaypiece][2]) || (player->pieceDeatail[i][2])) != BASE &&
+            player->pieceDeatail[randomplaypiece][2] == player->pieceDeatail[i][2])
         {
             printf("%s player's %c%d piece and %c%d create a block\n",
                    player->color,
@@ -875,8 +902,8 @@ int canCreateBlock(player *player)
     {
         for (int j = 0; j < 4; j++)
         {
-            if (((player->forpieces[i][2]) || (player->forpieces[j][2])) != BASE &&
-                player->forpieces[i][2] == player->forpieces[j][2])
+            if (((player->pieceDeatail[i][2]) || (player->pieceDeatail[j][2])) != BASE &&
+                player->pieceDeatail[i][2] == player->pieceDeatail[j][2])
             {
                 return 1;
             }
@@ -886,7 +913,7 @@ int canCreateBlock(player *player)
 }
 
 
-void teleport(player *player, int playpiece, int onmistry)
+void mistryTeleport(player *player, int playpiece)
 
 {
     switch (rand() % 6)
@@ -895,17 +922,17 @@ void teleport(player *player, int playpiece, int onmistry)
         printf("%s piece %c%d teleported to Bhawana - Cell - %d.\n",
                 player->color,player->colorfirst,playpiece+1,BHAWANA);
 
-        player->forpieces[playpiece][2] = BHAWANA;
-        player->forpieces[playpiece][6] = FOURROUND;
+        player->pieceDeatail[playpiece][2] = BHAWANA;
+        player->pieceDeatail[playpiece][6] = FOURROUND;
         if (rand() % 2 == 0)
         {
-            player->forpieces[playpiece][5] = ENERGIZE;
+            player->pieceDeatail[playpiece][5] = ENERGIZE;
             printf("%s piece %c%d feels energized, and movement speed doubles.\n",
                 player->color,player->colorfirst,playpiece+1);
         }
         else
         {
-            player->forpieces[playpiece][5] = SICK;
+            player->pieceDeatail[playpiece][5] = SICK;
             printf("%s piece %c%d feels sick, and movement speed halves.\n",
                 player->color,player->colorfirst,playpiece+1);
         }
@@ -914,9 +941,9 @@ void teleport(player *player, int playpiece, int onmistry)
     case 1:
         printf("%s piece %c%d teleported to Kotuwa - Cell - %d.\n",
                 player->color,player->colorfirst,playpiece+1,KOTUWA);
-        player->forpieces[playpiece][2] = KOTUWA;
-        player->forpieces[playpiece][6] = FOURROUND;
-        player->forpieces[playpiece][5] = FREEZE;
+        player->pieceDeatail[playpiece][2] = KOTUWA;
+        player->pieceDeatail[playpiece][6] = FOURROUND;
+        player->pieceDeatail[playpiece][5] = FREEZE;
         printf("%s piece %c%d attends briefing and cannot move for four rounds.\n",
                 player->color,player->colorfirst,playpiece+1);
         break;
@@ -925,9 +952,9 @@ void teleport(player *player, int playpiece, int onmistry)
         printf("%s piece %c%d teleported to Pita-Kotuwa - Cell - %d.\n",
                 player->color,player->colorfirst,playpiece+1,PITAKOTUWA);
 
-        if (player->forpieces[playpiece][4] == 1)
+        if (player->pieceDeatail[playpiece][4] == 1)
         {
-            player->forpieces[playpiece][4] = -1;
+            player->pieceDeatail[playpiece][4] = -1;
             printf("The %s piece %c%d which was moving clockwise, has changed to moving coun-terclockwise.\n",
                 player->color,player->colorfirst,playpiece+1);
         }
@@ -936,11 +963,11 @@ void teleport(player *player, int playpiece, int onmistry)
             printf("%s piece %c%d teleported to Kotuwa - Cell - %d.\n",
                 player->color,player->colorfirst,playpiece+1,KOTUWA);
 
-            player->forpieces[playpiece][2] = KOTUWA;
-            player->forpieces[playpiece][6] = FOURROUND;
-            player->forpieces[playpiece][5] = FREEZE;
+            player->pieceDeatail[playpiece][2] = KOTUWA;
+            player->pieceDeatail[playpiece][6] = FOURROUND;
+            player->pieceDeatail[playpiece][5] = FREEZE;
 
-            printf("The %s piece %c%d  is moving in a counterclockwise direction. Teleporting to Kotuwa from Pita-Kotuwa.\n",
+            printf("The %s piece %c%d  is moving in a counterclockwise direction. mistryTeleporting to Kotuwa from Pita-Kotuwa.\n",
                 player->color,player->colorfirst,playpiece+1);
         }
         break;
@@ -948,7 +975,7 @@ void teleport(player *player, int playpiece, int onmistry)
     case 3:
         printf("%s piece %c%d teleported to Base - Cell - %d.\n",
                 player->color,player->colorfirst,playpiece+1,BASE);
-        player->forpieces[playpiece][2] = BASE;
+        player->pieceDeatail[playpiece][2] = BASE;
         player->inBase++;
         player->started--;
         break;
@@ -956,13 +983,13 @@ void teleport(player *player, int playpiece, int onmistry)
     case 4:
         printf("%s piece %c%d teleported to X - Cell - %d.\n",
                 player->color,player->colorfirst,playpiece+1,player->x);
-        player->forpieces[playpiece][2] = player->x;
+        player->pieceDeatail[playpiece][2] = player->x;
         break;
 
     case 5:
         printf("%s piece %c%d teleported to O - Cell - %d.\n",
                 player->color,player->colorfirst,playpiece+1,player->o);
-        player->forpieces[playpiece][2] = player->o;
+        player->pieceDeatail[playpiece][2] = player->o;
         break;
     }
 }
@@ -970,7 +997,7 @@ void teleport(player *player, int playpiece, int onmistry)
 
 bool canBeMistry(int mistryis)
 {
-    if (isPiecelocated)
+    if (isPiecelocated(mistryis))
     {
         return false;
     }
@@ -985,12 +1012,28 @@ bool canBeMistry(int mistryis)
 }
 
 
+bool isPiecelocated(int mistryis)
+{
+    for(int i=0;i<4;i++)
+    {
+        for(int j=0;j<4;j++)
+        {
+            if(arrayplayerlist[i]->pieceDeatail[j][2] == mistryis)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+
 int redcatch(int diceValue)
 {
     int mintoHome = 52;
     for (int i = 0; i < 4; i++)
     {
-        if (player3.forpieces[i][2] != BASE && player3.forpieces[i][8] == -1)
+        if (player3.pieceDeatail[i][2] != BASE && player3.pieceDeatail[i][8] == -1)
         {
             for (int j = 0; j < 4; j++)
             {
@@ -999,33 +1042,33 @@ int redcatch(int diceValue)
                     if ( // remove comparing same players pieces
                         &player3 != arrayplayerlist[j] &&
                         // can not catch at starting position
-                        player3.forpieces[i][2]+ diceValue != YX &&
-                        player3.forpieces[i][2]+ diceValue != BX &&
-                        player3.forpieces[i][2]+ diceValue != RX &&
-                        player3.forpieces[i][2]+ diceValue != GX &&
+                        player3.pieceDeatail[i][2]+ diceValue != YX &&
+                        player3.pieceDeatail[i][2]+ diceValue != BX &&
+                        player3.pieceDeatail[i][2]+ diceValue != RX &&
+                        player3.pieceDeatail[i][2]+ diceValue != GX &&
 
                         //remove homepath players
-                        arrayplayerlist[j]->forpieces[k][8] == 0 &&
+                        arrayplayerlist[j]->pieceDeatail[k][8] == 0 &&
                         // removing in base pieces
-                        (player3.forpieces[i][2] != BASE) &&
+                        (player3.pieceDeatail[i][2] != BASE) &&
                         // removing oppenent pieces base pieces
-                        (arrayplayerlist[i]->forpieces[k][2] != BASE) &&
+                        (arrayplayerlist[i]->pieceDeatail[k][2] != BASE) &&
                         // if they in a same block
-                        (player3.forpieces[i][2] + diceValue == arrayplayerlist[j]->forpieces[k][2]))
+                        (player3.pieceDeatail[i][2] + diceValue == arrayplayerlist[j]->pieceDeatail[k][2]))
                     {
-                        if (arrayplayerlist[j]->o - arrayplayerlist[j]->forpieces[k][2] < mintoHome)
+                        if (arrayplayerlist[j]->o - arrayplayerlist[j]->pieceDeatail[k][2] < mintoHome)
                         {
-                            mintoHome = arrayplayerlist[j]->o - arrayplayerlist[j]->forpieces[k][2];
+                            mintoHome = arrayplayerlist[j]->o - arrayplayerlist[j]->pieceDeatail[k][2];
                             // capturer color , piece captured color, piece,location
                             captureData[0] = 2;
                             captureData[1] = i;
                             captureData[2] = j;
                             captureData[3] = k;
-                            captureData[4] = arrayplayerlist[j]->forpieces[k][2];
+                            captureData[4] = arrayplayerlist[j]->pieceDeatail[k][2];
 
                             if (i == 4 && j == 4 && k == 4)
                             {
-                                player1.forpieces[captureData[1]][2] = player1.forpieces[captureData[1]][2] + diceValue;
+                                player1.pieceDeatail[captureData[1]][2] = player1.pieceDeatail[captureData[1]][2] + diceValue;
                                 return 1;
                             }
                         }
@@ -1042,30 +1085,30 @@ bool yellowcatch(int diceValue)
 {
     for (int i = 0; i < 4; i++)
     {
-        if (player1.forpieces[i][2] != BASE &&
-            player1.forpieces[i][8] == -1 &&
-            player1.forpieces[i][3] == 0)
+        if (player1.pieceDeatail[i][2] != BASE &&
+            player1.pieceDeatail[i][8] == -1 &&
+            player1.pieceDeatail[i][3] == 0)
         {
             for (int j = 0; j < 4; j++)
             {
                 for (int k = 0; k < 4; k++)
                 {
                     if (arrayplayerlist[0] != arrayplayerlist[j] &&
-                        arrayplayerlist[j]->forpieces[k][8] == 0 &&
-                        player3.forpieces[i][2]+ diceValue != YX &&
-                        player3.forpieces[i][2]+ diceValue != BX &&
-                        player3.forpieces[i][2]+ diceValue != RX &&
-                        player3.forpieces[i][2]+ diceValue != GX &&
+                        arrayplayerlist[j]->pieceDeatail[k][8] == 0 &&
+                        player3.pieceDeatail[i][2]+ diceValue != YX &&
+                        player3.pieceDeatail[i][2]+ diceValue != BX &&
+                        player3.pieceDeatail[i][2]+ diceValue != RX &&
+                        player3.pieceDeatail[i][2]+ diceValue != GX &&
 
-                        player1.forpieces[i][2] + diceValue == arrayplayerlist[j]->forpieces[k][2])
+                        player1.pieceDeatail[i][2] + diceValue == arrayplayerlist[j]->pieceDeatail[k][2])
                     {
-                        player1.forpieces[i][2] = player1.forpieces[i][2] + diceValue;
+                        player1.pieceDeatail[i][2] = player1.pieceDeatail[i][2] + diceValue;
                         // capturer color , piece captured color, piece,location
                         captureData[0] = 0;
                         captureData[1] = i;
                         captureData[2] = j;
                         captureData[3] = k;
-                        captureData[4] = arrayplayerlist[j]->forpieces[k][2];
+                        captureData[4] = arrayplayerlist[j]->pieceDeatail[k][2];
 
                         return true;
                     }
@@ -1081,30 +1124,30 @@ bool greencatch(int diceValue)
 {
     for (int i = 0; i < 4; i++)
     {
-        if (player4.forpieces[i][2] != BASE &&
-            player4.forpieces[i][8] == -1 &&
-            player4.forpieces[i][3] == 0)
+        if (player4.pieceDeatail[i][2] != BASE &&
+            player4.pieceDeatail[i][8] == -1 &&
+            player4.pieceDeatail[i][3] == 0)
         {
             for (int j = 0; j < 4; j++)
             {
                 for (int k = 0; k < 4; k++)
                 {
                     if (arrayplayerlist[0] != arrayplayerlist[j] &&
-                        arrayplayerlist[j]->forpieces[k][8] == 0 &&
-                        player3.forpieces[i][2]+ diceValue != YX &&
-                        player3.forpieces[i][2]+ diceValue != BX &&
-                        player3.forpieces[i][2]+ diceValue != RX &&
-                        player3.forpieces[i][2]+ diceValue != GX &&
+                        arrayplayerlist[j]->pieceDeatail[k][8] == 0 &&
+                        player3.pieceDeatail[i][2]+ diceValue != YX &&
+                        player3.pieceDeatail[i][2]+ diceValue != BX &&
+                        player3.pieceDeatail[i][2]+ diceValue != RX &&
+                        player3.pieceDeatail[i][2]+ diceValue != GX &&
 
-                        player4.forpieces[i][2] + diceValue == arrayplayerlist[j]->forpieces[k][2])
+                        player4.pieceDeatail[i][2] + diceValue == arrayplayerlist[j]->pieceDeatail[k][2])
                     {
-                        player4.forpieces[i][2] = player4.forpieces[i][2] + diceValue;
+                        player4.pieceDeatail[i][2] = player4.pieceDeatail[i][2] + diceValue;
                         // capturer color , piece captured color, piece,location
                         captureData[0] = 0;
                         captureData[1] = i;
                         captureData[2] = j;
                         captureData[3] = k;
-                        captureData[4] = arrayplayerlist[j]->forpieces[k][2];
+                        captureData[4] = arrayplayerlist[j]->pieceDeatail[k][2];
 
                         return true;
                     }
@@ -1123,32 +1166,32 @@ int yellowPlayPiece(int diceValue)
     int yellowpiece = -1;
     for (int i = 0; i < 4; i++)
     {
-        if (player1.forpieces[i][2] != BASE &&  player1.forpieces[i][8] < 0)
+        if (player1.pieceDeatail[i][2] != BASE &&  player1.pieceDeatail[i][8] < 0)
         {
-            if (player1.forpieces[i][4] == 1)
+            if (player1.pieceDeatail[i][4] == 1)
             {
-                unitsToHome = 52 - player1.forpieces[i][2];
+                unitsToHome = 52 - player1.pieceDeatail[i][2];
                 if (unitsToHome < minUnits)
                 {
                     minUnits = unitsToHome;
                     yellowpiece = i;
                 }
             }
-            else if (player1.forpieces[i][4] == -1)
+            else if (player1.pieceDeatail[i][4] == -1)
             {
-                if (player1.forpieces[i][2] <= 2)
+                if (player1.pieceDeatail[i][2] <= 2)
                 {
-                    unitsToHome = 51 + player1.forpieces[i][2];
+                    unitsToHome = 51 + player1.pieceDeatail[i][2];
                     if (unitsToHome < minUnits)
                     {
                         minUnits = unitsToHome;
                         yellowpiece = i;
-                        //player1.forpieces[i][7] = player1.forpieces[i][7] + 2;
+                        //player1.pieceDeatail[i][7] = player1.pieceDeatail[i][7] + 2;
                     }
                 }
                 else
                 {
-                    unitsToHome = player1.forpieces[i][2];
+                    unitsToHome = player1.pieceDeatail[i][2];
                     if (unitsToHome < minUnits)
                     {
                         minUnits = unitsToHome;
@@ -1167,8 +1210,8 @@ int bluePlayPiece(int diceValue)
 {
     for(int i=0;i<4;i++)
     {
-        if (player2.forpieces[blueOrder%4][2] != BASE &&
-                player2.forpieces[blueOrder%4][8] == -1)
+        if (player2.pieceDeatail[blueOrder%4][2] != BASE &&
+                player2.pieceDeatail[blueOrder%4][8] == -1)
         {
             return blueOrder%4;
         }
@@ -1182,8 +1225,8 @@ int redPlayPiece()
 {
     for(int i=0;i<4;i++)
     {
-        if (player3.forpieces[redorder%4][2] != BASE &&
-                player3.forpieces[redorder%4][8] == -1)
+        if (player3.pieceDeatail[redorder%4][2] != BASE &&
+                player3.pieceDeatail[redorder%4][8] == -1)
         {
             return redorder%4;
         }
@@ -1195,7 +1238,7 @@ int redPlayPiece()
     // {
     //     for(int i=0;i<4;i++)
     //     {
-    //         if(player3.forpieces[i][2]!=BASE  && player3.forpieces[i][8] < 0)
+    //         if(player3.pieceDeatail[i][2]!=BASE  && player3.pieceDeatail[i][8] < 0)
     //         {
     //             return i;
     //         }
@@ -1209,7 +1252,7 @@ int redPlayPiece()
     //     {
     //         x = rand() % 4;
     //         printf("\n-------------------------------------R2\n");
-    //         if((player3.forpieces[x][2]==BASE || player3.forpieces[x][8] != -1))
+    //         if((player3.pieceDeatail[x][2]==BASE || player3.pieceDeatail[x][8] != -1))
     //         {
     //             return x;
     //         }
@@ -1223,8 +1266,8 @@ int greenPlayPiece()
 {
     for(int i=0;i<4;i++)
     {
-        if (player4.forpieces[greenorder%4][2] != BASE &&
-                player4.forpieces[greenorder%4][8] == -1)
+        if (player4.pieceDeatail[greenorder%4][2] != BASE &&
+                player4.pieceDeatail[greenorder%4][8] == -1)
         {
             return greenorder%4;
         }
@@ -1238,7 +1281,7 @@ int greenPlayPiece()
     //     printf("\n-------------------------------------G2\n");
     //     for(int i=0;i<4;i++)
     //     {
-    //         if(player4.forpieces[i][2] != BASE && player4.forpieces[i][8] < 0)
+    //         if(player4.pieceDeatail[i][2] != BASE && player4.pieceDeatail[i][8] < 0)
     //         {
     //             printf("\n-------------------------------------G3-1 - %d\n",i);
     //             return i;
@@ -1253,7 +1296,7 @@ int greenPlayPiece()
     //     {
     //         x = rand() % 4;
     //         printf("\n-------------------------------------G4-2 - %d\n",x);
-    //         if((player4.forpieces[x][2] == BASE || player4.forpieces[x][8] != -1))
+    //         if((player4.pieceDeatail[x][2] == BASE || player4.pieceDeatail[x][8] != -1))
     //         {
     //             return x;
     //         }
@@ -1263,15 +1306,15 @@ int greenPlayPiece()
 }
 
 
-bool isHome(player *player, int playpiece, int roll)
+bool passApporoach(player *player, int playpiece, int roll)
 {
     if(player->playernum == 0)
     {
-        if (player->forpieces[playpiece][4] == 1)
+        if (player->pieceDeatail[playpiece][4] == 1)
         {
             //works all but not to yellow
-            if (player->forpieces[playpiece][2] < 52 &&
-                player->forpieces[playpiece][2] + roll >= 52)
+            if (player->pieceDeatail[playpiece][2] < 52 &&
+                player->pieceDeatail[playpiece][2] + roll >= 52)
             {
                 return true;;
             }
@@ -1280,10 +1323,10 @@ bool isHome(player *player, int playpiece, int roll)
                 return false;
             }
         }
-        else if(player->forpieces[playpiece][4] == -1)
+        else if(player->pieceDeatail[playpiece][4] == -1)
         {
-            if (player->forpieces[playpiece][2] > 0 &&
-                player->forpieces[playpiece][2] - roll <= 0)
+            if (player->pieceDeatail[playpiece][2] > 0 &&
+                player->pieceDeatail[playpiece][2] - roll <= 0)
             {
                 return true;;
             }
@@ -1299,11 +1342,11 @@ bool isHome(player *player, int playpiece, int roll)
     }
     else
     {
-        if (player->forpieces[playpiece][4] == 1)
+        if (player->pieceDeatail[playpiece][4] == 1)
         {
             //works all but not to yellow
-            if (player->forpieces[playpiece][2] < player->o &&
-                player->forpieces[playpiece][2] + roll >= player->o)
+            if (player->pieceDeatail[playpiece][2] < player->o &&
+                player->pieceDeatail[playpiece][2] + roll >= player->o)
             {
                 return true;;
             }
@@ -1312,10 +1355,10 @@ bool isHome(player *player, int playpiece, int roll)
                 return false;
             }
         }
-        else if(player->forpieces[playpiece][4] == -1)
+        else if(player->pieceDeatail[playpiece][4] == -1)
         {
-            if (player->forpieces[playpiece][2] > player->o &&
-                player->forpieces[playpiece][2] + roll <= player->o)
+            if (player->pieceDeatail[playpiece][2] > player->o &&
+                player->pieceDeatail[playpiece][2] + roll <= player->o)
             {
                 return true;;
             }
@@ -1336,67 +1379,68 @@ bool isHome(player *player, int playpiece, int roll)
 void homeMove(player *player, int playpiece, int roll)
 {
     //indicater for he is in home path
-    if(player->forpieces[playpiece][8] == -1)
+    if(player->pieceDeatail[playpiece][8] == -1)
     {
         //in O position
-        player->forpieces[playpiece][8] = 0;
-        player->forpieces[playpiece][2] = FINISH;
-        int togo;
+        player->pieceDeatail[playpiece][8] = 0;
+        //player->pieceDeatail[playpiece][2] = FINISH;
+        int togo = 0;
 
-        if(player->playernum == 0)
+        if(player->playernum == YELLOW)
         {
-            if(player->forpieces[playpiece][4] == 1)
+            if(player->pieceDeatail[playpiece][4] == 1)
             {
-                togo = roll - (52 - player->forpieces[playpiece][2]);
-                player->forpieces[playpiece][8] = player->forpieces[playpiece][8]+togo;
+                togo = roll - (52 - player->pieceDeatail[playpiece][2]);
+                player->pieceDeatail[playpiece][8] = player->pieceDeatail[playpiece][8]+togo;
             }
-            else
+            else if(player->pieceDeatail[playpiece][4] == -1)
             {
-                togo = roll - player->forpieces[playpiece][2];
-                player->forpieces[playpiece][8] = player->forpieces[playpiece][8]+togo;
+                togo = roll - player->pieceDeatail[playpiece][2];
+                player->pieceDeatail[playpiece][8] = player->pieceDeatail[playpiece][8]+togo;
             }
         }
         else
         {
-            if(player->forpieces[playpiece][4] == 1)
+            if(player->pieceDeatail[playpiece][4] == 1)
             {
-                togo = roll - (player->o - player->forpieces[playpiece][2]);
-                player->forpieces[playpiece][8] = player->forpieces[playpiece][8]+togo;
+                togo = roll - (player->o - player->pieceDeatail[playpiece][2]);
+                player->pieceDeatail[playpiece][8] = player->pieceDeatail[playpiece][8]+togo;
             }
-            else
+            else if(player->pieceDeatail[playpiece][4] == -1)
             {
-                togo = roll - (player->forpieces[playpiece][2] - player->o);
-                player->forpieces[playpiece][8] = player->forpieces[playpiece][8]+togo;
+                togo = roll - ((player->pieceDeatail[playpiece][2] - player->o));
+                player->pieceDeatail[playpiece][8] = player->pieceDeatail[playpiece][8]+togo;
             }
         }
         
     }
-    else if(player->forpieces[playpiece][8]<=6)
+    else if(player->pieceDeatail[playpiece][8]+roll <=6)
     {
-        if(player->forpieces[playpiece][8]+roll < 6)
+        if(player->pieceDeatail[playpiece][8]+roll < 6)
         {
-            player->forpieces[playpiece][8] = player->forpieces[playpiece][8]+roll;
+            player->pieceDeatail[playpiece][8] = player->pieceDeatail[playpiece][8]+roll;
         }
-        else if(player->forpieces[playpiece][8]+roll == 6)
+        else if(player->pieceDeatail[playpiece][8]+roll == 6)
         {
-            player->forpieces[playpiece][8] = player->forpieces[playpiece][8]+roll;
+            player->pieceDeatail[playpiece][8] = player->pieceDeatail[playpiece][8]+roll;
             printf("%s %c%d====================Piece Wins\n",player->color,player->colorfirst,playpiece+1);
-            player->forpieces[playpiece][2] = FINISH;
-            player->forpieces[playpiece][3] = FINISH;
-            player->forpieces[playpiece][8] = FINISH;
-            player->finished++;
-            player->started--;
+            player->pieceDeatail[playpiece][2] = FINISH;
+            player->pieceDeatail[playpiece][3] = FINISH;
+            player->pieceDeatail[playpiece][8] = FINISH;
+            player->finished = player->finished +1;
+            player->started = player->started-1;
             endpieces++;
-
+                                                                                                                                                                                                                                                                          
             if (player->finished==4)
             {
-                printf("%s %c%d====================Player Wins the game\n",player->color,player->colorfirst,playpiece+1);
+                printf("%s %c%d====================Player Wins the game\n",
+                    player->color,player->colorfirst,
+                    playpiece+1);
             }  
         }
         else
         {
-            printf("Can not move must roll %d\n",6 - player->forpieces[playpiece][8]);
+            printf("Can not move must roll %d\n",6 - player->pieceDeatail[playpiece][8]);
         }
-    }
-    
+    } 
 }

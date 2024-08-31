@@ -25,7 +25,7 @@
 // #define PIECE3 2
 // #define PIECE4 3
 
-// //teleport
+// //mistryTeleport
 // #define BHAWANA 9
 // #define KOTUWA 27
 // #define PITAKOTUWA 46
@@ -68,7 +68,7 @@
 //     int x;
 //     int o;
 //     int sixrolled;
-//     int *forpieces[4];
+//     int *pieceDeatail[4];
 // }player;
 
 // // typedef struct blockad

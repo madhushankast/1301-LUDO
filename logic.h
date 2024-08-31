@@ -43,7 +43,7 @@ bool canCaptureAny(int);
 
 int createBlocks(player *player, int randomplaypiece);
 
-void teleport(player* player,int randomplaypiece,int onmistry);
+void mistryTeleport(player* player,int randomplaypiece);
 
 bool canBeMistry(int mistryIs);
 
@@ -68,7 +68,7 @@ int greenPlayPiece();
 bool isPiecelocated(int mistryis);
 
 
-bool isHome(player *player,int playpiece,int roll);
+bool passApporoach(player *player,int playpiece,int roll);
 
 void homeMove(player *player,int playpiece,int roll);
 
