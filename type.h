@@ -37,39 +37,23 @@
 
 
 //data count one piece holds
-#define PDATA 10
+#define PIECEDATA 9
 
 extern const char* players[4];
-//extern struct player *playerlist[4];
-
-
-
-//for each color
-
-//for each piece
-// typedef struct piece
-// {
-//     int player;
-//     int piecenum;
-//     int position;
-//     //green = 0,yellow = 1,blue = 2,red = 3  
-// }piece;
 
 
 typedef struct player
 {
-    //defined by array number
-    //yellow = 0,blue = 1,red = 2 green = 3,
-    int playernum;
-    int inBase;
-    int started;
-    int finished;
-    char *color;
-    char colorfirst;
-    int x;
-    int o;
-    int sixrolled;
-    int *pieceDeatail[4];
+    int playernum;          //yellow = 0 , blue = 1 , red = 2 , green = 3,
+    int inBase;             //Pieces count Base out of 4
+    int started;            //Pieces count in Standard Path
+    int finished;           //Pieces Count finished the game
+    char *color;            //String for Color
+    char colorfirst;        //First Letter of Colour
+    int x;                  //Starting position of player
+    int o;                  //Apporoach cell of player
+    int sixrolled;          //count for rolling six 
+    int *pieceDeatail[4];   //Four size array for hold each piece
 }player;
 
 // typedef struct blockad

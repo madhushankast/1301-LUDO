@@ -14,28 +14,28 @@ const char *players[4] = {"Yellow", "Blue", "Red", "Green"};
 // 7 - travelled    |   8  - homepath value |   9 - finneshed the play
 
 // yellow
-int piecey1[PDATA] = {YELLOW, PIECE1, BASE, 0, 0, 1, 0,0 ,-1,0};
-int piecey2[PDATA] = {YELLOW, PIECE2, BASE, 0, 0, 1, 0,0 , -1,0};
-int piecey3[PDATA] = {YELLOW, PIECE3, BASE, 0, 0, 1, 0,0 ,-1,0};
-int piecey4[PDATA] = {YELLOW, PIECE4, BASE, 0, 0, 1, 0,0 , -1,0};
+int piecey1[PIECEDATA] = {YELLOW, PIECE1, BASE, 0, 0, 1, 0,0 ,-1};
+int piecey2[PIECEDATA] = {YELLOW, PIECE2, BASE, 0, 0, 1, 0,0 , -1};
+int piecey3[PIECEDATA] = {YELLOW, PIECE3, BASE, 0, 0, 1, 0,0 ,-1};
+int piecey4[PIECEDATA] = {YELLOW, PIECE4, BASE, 0, 0, 1, 0,0 , -1};
 
 // blue pieces
-int pieceb1[PDATA] = {BLUE, PIECE1, BASE, 0, 0, 1, 0,0 ,-1,0};
-int pieceb2[PDATA] = {BLUE, PIECE2, BASE, 0, 0, 1, 0,0 , -1,0};
-int pieceb3[PDATA] = {BLUE, PIECE3, BASE, 0, 0, 1, 0,0 , -1,0};
-int pieceb4[PDATA] = {BLUE, PIECE4, BASE, 0, 0, 1, 0,0 , -1,0};
+int pieceb1[PIECEDATA] = {BLUE, PIECE1, BASE, 0, 0, 1, 0,0 ,-1};
+int pieceb2[PIECEDATA] = {BLUE, PIECE2, BASE, 0, 0, 1, 0,0 , -1};
+int pieceb3[PIECEDATA] = {BLUE, PIECE3, BASE, 0, 0, 1, 0,0 , -1};
+int pieceb4[PIECEDATA] = {BLUE, PIECE4, BASE, 0, 0, 1, 0,0 , -1};
 
 // red pieces
-int piecer1[PDATA] = {RED, PIECE1, BASE, 0, 0, 1, 0,0 , -1,0};
-int piecer2[PDATA] = {RED, PIECE2, BASE, 0, 0, 1, 0,0 , -1,0};
-int piecer3[PDATA] = {RED, PIECE3, BASE, 0, 0, 1, 0,0 , -1,0};
-int piecer4[PDATA] = {RED, PIECE4, BASE, 0, 0, 1, 0,0 , -1,0};
+int piecer1[PIECEDATA] = {RED, PIECE1, BASE, 0, 0, 1, 0,0 , -1};
+int piecer2[PIECEDATA] = {RED, PIECE2, BASE, 0, 0, 1, 0,0 , -1};
+int piecer3[PIECEDATA] = {RED, PIECE3, BASE, 0, 0, 1, 0,0 , -1};
+int piecer4[PIECEDATA] = {RED, PIECE4, BASE, 0, 0, 1, 0,0 , -1};
 
 // green pieces
-int pieceg1[PDATA] = {GREEN, PIECE1, BASE, 0, 0, 1, 0,0 , -1,0};
-int pieceg2[PDATA] = {GREEN, PIECE2, BASE, 0, 0, 1, 0,0 , -1,0};
-int pieceg3[PDATA] = {GREEN, PIECE3, BASE, 0, 0, 1, 0,0 , -1,0};
-int pieceg4[PDATA] = {GREEN, PIECE4, BASE, 0, 0, 1, 0,0 , -1,0};
+int pieceg1[PIECEDATA] = {GREEN, PIECE1, BASE, 0, 0, 1, 0,0 , -1};
+int pieceg2[PIECEDATA] = {GREEN, PIECE2, BASE, 0, 0, 1, 0,0 , -1};
+int pieceg3[PIECEDATA] = {GREEN, PIECE3, BASE, 0, 0, 1, 0,0 , -1};
+int pieceg4[PIECEDATA] = {GREEN, PIECE4, BASE, 0, 0, 1, 0,0 , -1};
 
 // players
 player player1 = {YELLOW, 4, 0, 0, "Yellow", 'Y', YX, YO, 0, {
@@ -196,13 +196,13 @@ void gameplay(int starter)
 
     int round = 1;
 
-    while (endpieces < 13 )
+    while (endpieces < 16 )
     {
     
     // while (1) {
     //     if ( getchar()) { // '\r' is the Enter key
             printf("Code is running...\n");
-            // Place your code here
+
 
             printf("This is round ----> %d\n", round++);
 
@@ -257,7 +257,7 @@ void gameplay(int starter)
 
         for(int i=0;i<4;i++)
         {
-            if(arrayplayerlist[i]->finished ==4)
+            if(arrayplayerlist[i]->finished == 4)
             {
                 printf("%s wins game\n",arrayplayerlist[i]->color);
                 return;
@@ -351,6 +351,10 @@ void yellowMove()
 
 void blueMove()
 {
+    if(player2.finished == 4)
+    {
+        return;
+    }
     while (1)
     {
         diceValue = roll();
@@ -405,6 +409,10 @@ void blueMove()
 
 void redMove()
 {
+    if(player3.finished == 4)
+    {
+        return;
+    }
     while (1)
     {
         diceValue = roll();
@@ -479,6 +487,10 @@ void redMove()
 
 void greenMove()
 {
+    if(player4.finished == 4)
+    {
+        return;
+    }
     while(1)
     {
         diceValue = roll();
@@ -1087,19 +1099,18 @@ bool yellowcatch(int diceValue)
     {
         if (player1.pieceDeatail[i][2] != BASE &&
             player1.pieceDeatail[i][8] == -1 &&
-            player1.pieceDeatail[i][3] == 0)
+            player1.pieceDeatail[i][3] == 0 &&
+            player1.pieceDeatail[i][2]+ diceValue != YX &&
+            player1.pieceDeatail[i][2]+ diceValue != BX &&
+            player1.pieceDeatail[i][2]+ diceValue != RX &&
+            player1.pieceDeatail[i][2]+ diceValue != GX)
         {
             for (int j = 0; j < 4; j++)
             {
                 for (int k = 0; k < 4; k++)
                 {
                     if (arrayplayerlist[0] != arrayplayerlist[j] &&
-                        arrayplayerlist[j]->pieceDeatail[k][8] == 0 &&
-                        player3.pieceDeatail[i][2]+ diceValue != YX &&
-                        player3.pieceDeatail[i][2]+ diceValue != BX &&
-                        player3.pieceDeatail[i][2]+ diceValue != RX &&
-                        player3.pieceDeatail[i][2]+ diceValue != GX &&
-
+                        arrayplayerlist[j]->pieceDeatail[k][8] == -1 &&
                         player1.pieceDeatail[i][2] + diceValue == arrayplayerlist[j]->pieceDeatail[k][2])
                     {
                         player1.pieceDeatail[i][2] = player1.pieceDeatail[i][2] + diceValue;

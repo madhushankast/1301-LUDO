@@ -36,7 +36,7 @@
 
 
 // //data count one piece holds
-// #define PDATA 10
+// #define PIECEDATA 10
 
 // extern const char* players[4];
 // //extern struct player *playerlist[4];
