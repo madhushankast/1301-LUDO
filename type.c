@@ -48,9 +48,9 @@
 // //for each piece
 // // typedef struct piece
 // // {
-// //     int player;
-// //     int piecenum;
-// //     int position;
+// //     short player;
+// //     short piecenum;
+// //     short position;
 // //     //green = 0,yellow = 1,blue = 2,red = 3  
 // // }piece;
 
@@ -59,24 +59,24 @@
 // {
 //     //defined by array number
 //     //yellow = 0,blue = 1,red = 2 green = 3,
-//     int playerIndex;
-//     int started;
-//     int inPlay;
-//     int finished;
+//     short playerIndex;
+//     short started;
+//     short inPlay;
+//     short finished;
 //     char *color;
 //     char colorfirst;
-//     int x;
-//     int o;
-//     int sixrolled;
-//     int *pieceData[4];
+//     short x;
+//     short o;
+//     short sixrolled;
+//     short *pieceData[4];
 // }player;
 
 // // typedef struct blockad
 // // {
-// //     int playerIndex;
-// //     int blockadPieces[4];
-// //     int blockaedPosition;
-// //     int pieceCount;
+// //     short playerIndex;
+// //     short blockadPieces[4];
+// //     short blockaedPosition;
+// //     short pieceCount;
 // // }blockad;
 
 
