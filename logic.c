@@ -259,7 +259,7 @@ void gameplay(int starter)
     };
 }
 
-
+//yellow specific behavior
 void yellowMove()
 {
     //return if player pieces all have Reached Home
@@ -340,7 +340,7 @@ void yellowMove()
     };
 }
 
-
+//blue specific behavior
 void blueMove()
 {
     //return if player pieces all have Reached Home
@@ -402,7 +402,7 @@ void blueMove()
     };
 }
 
-
+//red specific behavior
 void redMove()
 {
     //return if player pieces all have Reached Home
@@ -485,7 +485,7 @@ void redMove()
     };
 }
 
-
+//green specific behavior
 void greenMove()
 {
     //return if player pieces all have Reached Home
