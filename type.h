@@ -34,8 +34,6 @@
 #define FOURROUND 4 
 #define FREEZE 0
 
-
-
 //data count one piece holds
 #define PIECEDATA 9
 
@@ -56,13 +54,7 @@ typedef struct player
     int *pieceDeatail[4];   //Four size array for hold each piece
 }player;
 
-// typedef struct blockad
-// {
-//     int playernum;
-//     int blockadPieces[4];
-//     int blockaedPosition;
-//     int pieceCount;
-// }blockad;
+
 
 
 

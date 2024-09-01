@@ -14,13 +14,13 @@ const char *players[4] = {"Yellow", "Blue", "Red", "Green"};
 // 7 - travelled    |   8  - homepath value |   9 - finneshed the play
 
 // yellow
-int piecey1[PIECEDATA] = {YELLOW, PIECE1, BASE, 0, 0, 1, 0,0 ,-1};
+int piecey1[PIECEDATA] = {YELLOW, PIECE1, BASE, 0, 0, 1, 0,0 ,- 1};
 int piecey2[PIECEDATA] = {YELLOW, PIECE2, BASE, 0, 0, 1, 0,0 , -1};
-int piecey3[PIECEDATA] = {YELLOW, PIECE3, BASE, 0, 0, 1, 0,0 ,-1};
+int piecey3[PIECEDATA] = {YELLOW, PIECE3, BASE, 0, 0, 1, 0,0 , -1};
 int piecey4[PIECEDATA] = {YELLOW, PIECE4, BASE, 0, 0, 1, 0,0 , -1};
 
 // blue pieces
-int pieceb1[PIECEDATA] = {BLUE, PIECE1, BASE, 0, 0, 1, 0,0 ,-1};
+int pieceb1[PIECEDATA] = {BLUE, PIECE1, BASE, 0, 0, 1, 0,0 , -1};
 int pieceb2[PIECEDATA] = {BLUE, PIECE2, BASE, 0, 0, 1, 0,0 , -1};
 int pieceb3[PIECEDATA] = {BLUE, PIECE3, BASE, 0, 0, 1, 0,0 , -1};
 int pieceb4[PIECEDATA] = {BLUE, PIECE4, BASE, 0, 0, 1, 0,0 , -1};
@@ -65,17 +65,15 @@ player player4 = {GREEN, 4, 0, 0, "Green", 'G', GX, GO, 0, {
 
 // the pointer array that pints to player structure variable
 player *arrayplayerlist[4] = {&player1, &player2, &player3, &player4};
-// capturer color , piece captured color, piece,location
+// 0 - capturer color 1 - piece 2 - captured color 3 - captured piece 4 - location
 int captureData[5];
-int diceValue;
-
-int endpieces = 0;
-// player *blockad[4];
 int mistrycell;
-int blueOrder = 0;
-int redorder = 0;
-int greenorder = 0;
-//int playpiece;
+int finishedPlay = 1;
+
+int blueOrder   = 0;
+int redorder    = 0;
+int greenorder  = 0;
+
 
 // output the begining statmenet and player order
 int LUDO()
@@ -83,37 +81,52 @@ int LUDO()
     // seed rand function
     srand(time(0));
 
-    // begining statements
+    // begining CLI for game
     printbegin();
 
     // selecting starter by higherst dice value
     int startPlayer;
     startPlayer = firstHand();
 
-    // passing starting player and endpieces count
+    // passing starting player
     gameplay(startPlayer);
 
-    printf("ENDGAME\n");
+    // printing finished order
+    for(int i=0;i<4;i++)
+    {
+        if(arrayplayerlist[i]->finished == 4)
+        {
+            printf("%s Finished game %d place\n",
+                arrayplayerlist[i]->color,
+                arrayplayerlist[i]->playernum);     //playernum stores the finished place
+        }
+        if(arrayplayerlist[i]->finished != 4)
+        {
+            printf("%s Finished game 4 place\n",
+                arrayplayerlist[i]->color);
+        }
+    }
+    
+    printf("Game Ended\n");
     return 1;
 }
 
 // the starting statement
 void printbegin()
 {
-    printf("The\tYellow\tplayer has four(04) pieces named Y1,Y2,Y3 and Y4\n");
-    printf("The\tBlue\tplayer has four(04) pieces named B1,B2,B3 and B4\n");
-    printf("The\tRed\tplayer has four(04) pieces named R1,R2,R3 and R4\n");
-    printf("The\tGreen\tplayer has four(04) pieces named G1,G2,G3 and G4\n");
+    printf("The\tYellow\tplayer has four (04) pieces named Y1,Y2,Y3 and Y4\n");
+    printf("The\tBlue\tplayer has four (04) pieces named B1,B2,B3 and B4\n");
+    printf("The\tRed\tplayer has four (04) pieces named R1,R2,R3 and R4\n");
+    printf("The\tGreen\tplayer has four (04) pieces named G1,G2,G3 and G4\n");
 }
 
 // rolling dice to output 1 - 6 values
 int roll()
 {
-    // rolling the dice
     int x = (rand() % 6);
     if (x == 0)
     {
-        x = 6;
+        x = 6; // make 6 if mod of roll = 0; 
     }
     return x;
 }
@@ -122,7 +135,7 @@ int roll()
 int firstroll(int i)
 {
     int x = roll();
-    printf("The\t%s\tplayer rolls\t%d\n", arrayplayerlist[i]->color, x);
+    printf("The \t%s \tplayer rolls \t%d\n", arrayplayerlist[i]->color, x);
     return x;
 }
 
@@ -130,20 +143,21 @@ int firstroll(int i)
 // finding highest rolled value and player
 int firstHand()
 {
-    int firstHandValue[4];
-    // int *ptrfirst = first;
+    int firstHandValue[4];          
     for (int i = 0; i < 4; i++)
     {
         int x = firstroll(i);
-        firstHandValue[i] = x;
+        firstHandValue[i] = x;      //store dice value rolled by each player
     }
-    // return sort(first);
 
-    int sortplayer[4];
+    int sortplayer[4];              //player array
     for (int i = 0; i < 4; i++)
     {
         sortplayer[i] = i;
     }
+
+    //sorting the firstHandValue array
+    //following the lead of that auto sort sortplayer array
     for (int i = 0; i < 3; i++)
     {
         for (int j = 0; j < 3; j++)
@@ -162,6 +176,7 @@ int firstHand()
         }
     }
 
+        //print dice rolled value order by highest to lowest 
         printf("%s player has the highest roll and will begin the game\n",
         players[*(sortplayer + 3)]);
         printf("The rolled dise value order is %s, %s, %s, and %s\n",
@@ -170,10 +185,11 @@ int firstHand()
             players[*(sortplayer + 1)],
             players[*(sortplayer)]);
 
+    //return highest rolled player
     return sortplayer[3];
 }
 
-
+//main game loop runs
 void gameplay(int starter)
 {
     // creating an new array to keep order and for looping
@@ -183,7 +199,6 @@ void gameplay(int starter)
         starter = starter % 4;
         play[i] = starter;
         starter++;
-        //printf("%d\n",play[i]);
     }
 
     printf("Round goes to left hand side and order is %s -> %s -> %s -> %s\n",
@@ -193,145 +208,122 @@ void gameplay(int starter)
            arrayplayerlist[play[3]]->color);
     printf("\n");
 
-
-    int round = 1;
-
-    while (endpieces < 16 )
+    int round = 1;              //round start here
+    while (finishedPlay < 4 )   //loop until 3 players finish the game
     {
-    
-    // while (1) {
-    //     if ( getchar()) { // '\r' is the Enter key
-            printf("Code is running...\n");
+        printf("This is round ----> %d\n", round++);
 
-
-            printf("This is round ----> %d\n", round++);
-
-            // repeating the players order
-            for (int i = 0; i < 4; i++)
+        // repeating the players order
+        for (int i = 0; i < 4; i++)
+        {
+            //calling the player according to the order in play[] array that keeps the order
+            switch (play[i])
             {
-                switch (i)
-                {
-                case 0: yellowMove();
-                    break;
-                case 1: blueMove();
-                    break;
-                case 2: redMove();
-                    break;
-                case 3: greenMove();
-                    break;
-                }
-
+            case 0: yellowMove();
+                break;
+            case 1: blueMove();
+                break;
+            case 2: redMove();
+                break;
+            case 3: greenMove();
+                break;
             }
-            // one round finished
-            printf("\n");
-            // endpieces++;
+        }
+        printf("\n");
 
-            if (round > 2 && (round % 4 == 0))
+        //if round greater than 2 and after each four round mistry cell get updates
+        if(round>2)
+        {
+            if (round % 4 == 0)
             {
-                // need to fix error can be mistry
-                int mistryIs;
+                int mistryIs;                   //local variable to check a cell can be a mistry cell
                 do
                 {
                     mistryIs = rand() % 52;
-                    if(canBeMistry(mistryIs))
+                    if(canBeMistry(mistryIs))   //check the generated mistry cell satisfy the requierments
                     {
                         break;
                     }
                 } while (0); 
-
                 mistrycell = mistryIs;
-                // printf("mistry cell on %d\n", mistrycell);
             }
-    
-        // printf("Status of player\n");
-        printRound();
-        if(round>2)
-        {
+
             printf("The mystery cell is at L%d and will be at that location for the next %d values\n",
                         mistrycell,
-                        4-(round%4));
+                        4-(round%4));   //for next round count
         }
-//         break;
-//     }
-//
 
-        for(int i=0;i<4;i++)
-        {
-            if(arrayplayerlist[i]->finished == 4)
-            {
-                printf("%s wins game\n",arrayplayerlist[i]->color);
-                return;
-            }
-        }
-    }
+                
+        //printing function for status in each round
+        printRound();
+    };
 }
 
 
 void yellowMove()
 {
+    //return if player pieces all have Reached Home
     if(player1.finished == 4)
     {
+        printf("%s Finished game\n",arrayplayerlist[0]->color);
         return;
     }
+
     while(1)
     {
-
-        diceValue = roll();
+        int diceValue = roll();                 //get dice value by roll
         printf("Yellow player rolled %d\n", diceValue);
+
         if (diceValue == 6)
         {
-            if (player1.inBase > -1 )
+            if (player1.inBase > -1 )           //if any pieces in base get to start location
             {
                 baseToStart(arrayplayerlist[0]);
             }
-            else if (yellowcatch(diceValue))
+            else if (yellowcatch(diceValue))    //check for catch and take it
             {
-                // searching for a catch to satisfy 1 catch
                 capturedOutput();
-                printf("Capture Player Gets another Roll\n");
+                printf("Yellow Captures a piece, Yellow Gets another Roll\n");
                 continue;
             }
-            else if(player1.started > 0)
+            else                                //(player1.started > 0)
             {
-                standmove(&player1, diceValue);
+                standardMove(&player1, diceValue);
             }
         }
         else
         {
-            if (player1.started == 0)
+            if (player1.started == 0)           //no playing pieces in board
             {
                 printf("%s must roll 6 to move pieces to X but player rolled %d\n", player1.color, diceValue);
                 return;
             }
-            else if(player1.started > 0)
+            else                                //started pieces in board        
             {
-                if (yellowcatch(diceValue))
+                if (yellowcatch(diceValue))     //check can take a catch
                 {
                     capturedOutput();
                     printf("Capture Player Gets another Roll\n");
                     continue;
                 }
-                else
+                else                            //make a general move to a piece
                 {
-                    standmove(&player1, diceValue);
+                    standardMove(&player1, diceValue);
                 }
             }
-            // else
-            // {
-            //     printf("--------------------------------------------------Edge case - fix\n");
-            // }
         }
 
-        // captured(&player1);
+        //after all moves check is there any piece that has captured if so another roll given
         if (canCaptureAny(0))
         {
             capturedOutput();
-            printf("Capture Player Gets another Roll\n");
+            printf("Yellow Captures a piece, Yellow Gets another Roll\n");
             continue;
         }
 
         // avoid block catrector
 
+        //checking has player rolled value 6 for three consecutive times
         if (diceValue == 6 && player1.sixrolled < 2)
         {
             player1.sixrolled++;
@@ -340,7 +332,7 @@ void yellowMove()
                 continue;
             }
         }
-        else
+        else //if so dice roll will cancel and dice passes to the next player
         {
             player1.sixrolled = 0;
             break;
@@ -351,45 +343,49 @@ void yellowMove()
 
 void blueMove()
 {
+    //return if player pieces all have Reached Home
     if(player2.finished == 4)
     {
+        printf("%s Finished game\n",arrayplayerlist[1]->color);
         return;
     }
+
     while (1)
     {
-        diceValue = roll();
+        int diceValue = roll();                         //get dice value by roll
         printf("Blue player rolled %d\n", diceValue);
         if (diceValue == 6)
         {
-            if (player2.inBase > -1)
+            if (player2.inBase > -1)                    //if any pieces in base get it to start location
             {
                 baseToStart(&player2);
             }
-            else if(player2.started > 0)
+            else                                        //if pieces in board make a general move
             {
-                standmove(&player2, diceValue);
+                standardMove(&player2, diceValue);
             }
         }
-        else
+        else //did not rolled dice six
         {
-            if (player2.started > 0)
+            if (player2.started > 0)                    //players in board make general move
             {
-                standmove(&player2, diceValue);
+                standardMove(&player2, diceValue);
             }
-            else
+            else                                        //give error massege that no pieces in board to move
             {
                 printf("%s must roll 6 to move pieces to X but player rolled %d\n", player2.color, diceValue);
             }
         }
 
+        //after all moves check is there any piece that has captured if so another roll given
         if (canCaptureAny(1))
         {
-
             capturedOutput();
-            printf("Capture Player Gets another Roll\n");
+            printf("Blue Captures a piece, Blue Gets another Roll\n");
             continue;
         }
 
+        //checking has player rolled value 6 for three consecutive times
         if (diceValue == 6 && player2.sixrolled < 2)
         {
             player2.sixrolled++;
@@ -398,7 +394,7 @@ void blueMove()
                 continue;
             }
         }
-        else
+        else //dice roll will cancel and dice passes to the next player
         {
             player2.sixrolled = 0;
             break;
@@ -409,65 +405,70 @@ void blueMove()
 
 void redMove()
 {
+    //return if player pieces all have Reached Home
     if(player3.finished == 4)
     {
+        printf("%s Finished game\n",arrayplayerlist[2]->color);
         return;
     }
+
     while (1)
     {
-        diceValue = roll();
+        int diceValue = roll();                     //get dice value by roll
         printf("RED player rolled %d\n", diceValue);
         // redplayer(x);
 
         if (diceValue == 6)
         {
-            if (player3.inBase == 4)
+            if (player3.inBase == 4)                //If all pieces in base take stating position
             {
                 baseToStart(&player3);
             }
-            else if (redcatch(diceValue))
+            else if (redcatch(diceValue))           //can take a capture if so get
             {
                 capturedOutput();
                 printf("Capture Player Gets another Roll\n");
                 continue;
             }
-            else if (player3.inBase > -1)
+            else if (player3.inBase > -1)           //if cannot capture take piece to start           
             {
                 baseToStart(&player3);
             }
-            else
+            else                                    //if pieces in board make a general move
             {
-                standmove(&player3, diceValue);
+                standardMove(&player3, diceValue); 
             }
         }
-        else
+        else    //did not rolled dice 6
         {
-            if ((player3.started > 0))
+            if (player3.started > 0)                //if pieces in board actively playing
             {
                 if (redcatch(diceValue))
                 {
                     capturedOutput();
                     continue;
                 }
-                else
+                else                                //if pieces in board make a general move
                 {
-                    standmove(&player3, diceValue);
+                    standardMove(&player3, diceValue);
                 }
             }
-            else if (player3.started == 0)
+            else //if no piece has started
             {
                 printf("%s must roll 6 to move pieces to X but player rolled %d\n",
                        player3.color, diceValue);
             }
         }
 
+        //after all moves check is there any piece that has captured if so another roll given
         if (canCaptureAny(2))
         {
             capturedOutput();
-            printf("Capture Player Gets another Roll\n");
+            printf("Red Captures a piece, Red Gets another Roll\n");
             continue;
         }
-
+        
+        //checking has player rolled value 6 for three consecutive times
         if (diceValue == 6 && player3.sixrolled < 2)
         {
             player3.sixrolled++;
@@ -476,7 +477,7 @@ void redMove()
                 continue;
             }
         }
-        else
+        else //dice roll will cancel and dice passes to the next player
         {
             player3.sixrolled = 0;
             break;
@@ -487,51 +488,51 @@ void redMove()
 
 void greenMove()
 {
+    //return if player pieces all have Reached Home
     if(player4.finished == 4)
     {
+        printf("%s Finished game\n",arrayplayerlist[3]->color);
         return;
     }
+    
     while(1)
     {
-        diceValue = roll();
+        int diceValue = roll();                             //get dice value by roll
         printf("Green player rolled %d\n", diceValue);
         if (diceValue == 6)
         {
-            if (player4.inBase > -1)
+            if (player4.inBase > -1)                        //if all pieces at base take one to start position
             {
                 baseToStart(&player4);
             }
-            else if (greencatch(diceValue))
+            else if (greencatch(diceValue))                 //check can make a capture
             {
                 capturedOutput();
-                continue;
+                //continue;
             }
             else
             {
-                standmove(&player4, diceValue);
+                standardMove(&player4, diceValue);          //general move in standard path
             }
         }
         else
         {
             if (player4.started > 0)
             {
-                standmove(&player4, diceValue);
+                standardMove(&player4, diceValue);          //if acrive pieces in board make general move
             }
-            else if (player4.started == 0)
+            else    //player have not any activer pices at standard path
             {
                 printf("%s must roll 6 to move pieces to X but player rolled %d\n",
                        player4.color, diceValue);
             }
-            else
-            {
-                printf("--------------------------------------------------Edge case - fix\n");
-            }
         }
 
+        //after all moves check is there any piece that has captured if so another roll given
         if (canCaptureAny(3))
         {
             capturedOutput();
-            printf("Capture Player Gets another Roll\n");
+            printf("Green Captures a piece, Green Gets another Roll\n");
             continue;
         }
 
@@ -571,7 +572,7 @@ void printRound()
             {
                 printf("%c%d -> Base\tcaptured - %d\tTravelled - %d\tDirection - %d\tHome L=%d\n",
                 arrayplayerlist[j]->colorfirst,
-                arrayplayerlist[j]->pieceDeatail[i][1],
+                arrayplayerlist[j]->pieceDeatail[i][1]+1,
                 arrayplayerlist[j]->pieceDeatail[i][3],
                 arrayplayerlist[j]->pieceDeatail[i][7],
                 arrayplayerlist[j]->pieceDeatail[i][4],
@@ -581,7 +582,7 @@ void printRound()
             {
                 printf("%c%d -> Home\tcaptured - %d\tTravelled - %d\tDirection - %d\tHome L= %d\n",
                 arrayplayerlist[j]->colorfirst,
-                arrayplayerlist[j]->pieceDeatail[i][1],
+                arrayplayerlist[j]->pieceDeatail[i][1]+1,
                 arrayplayerlist[j]->pieceDeatail[i][3],
                 arrayplayerlist[j]->pieceDeatail[i][7],
                 arrayplayerlist[j]->pieceDeatail[i][4],
@@ -592,7 +593,7 @@ void printRound()
             {
                 printf("%c%d is at L%d\tcaptured - %d\tTravelled - %d\tDirection - %d\tHome L= %d\n",
                 arrayplayerlist[j]->colorfirst,
-                arrayplayerlist[j]->pieceDeatail[i][1],
+                arrayplayerlist[j]->pieceDeatail[i][1]+1,
                 arrayplayerlist[j]->pieceDeatail[i][2],
                 arrayplayerlist[j]->pieceDeatail[i][3],
                 arrayplayerlist[j]->pieceDeatail[i][7],
@@ -670,7 +671,7 @@ void baseToStart(player *player)
 }
 
 
-int standmove(player *player, int roll)
+int standardMove(player *player, int roll)
 {
     int playpiece;
     
@@ -690,7 +691,15 @@ int standmove(player *player, int roll)
     // }
     for(int i=0;i<4;i++)
     {
-        if(player->pieceDeatail[i][8] > -1 && player->pieceDeatail[i][8]+roll <= 6)
+        if(player->pieceDeatail[i][8] == -1 &&
+            passApporoach(player, i, roll) &&          //can enter to the hoempath
+            player->pieceDeatail[i][7] > 2 &&      //must travelled more than two sells
+            player->pieceDeatail[i][3] > 0 )
+        {
+            homeMove(player, i, roll);
+            return 0;
+        }
+        else if(player->pieceDeatail[i][8] > -1 && player->pieceDeatail[i][8]+roll <= 6)
         {
             homeMove(player, i, roll);
             return 0;
@@ -707,15 +716,13 @@ int standmove(player *player, int roll)
     if(player->pieceDeatail[playpiece][8] == -1)
     {
 
-        if(passApporoach(player, playpiece, roll) &&          //can enter to the hoempath
-            player->pieceDeatail[playpiece][7] > 2 &&      //must travelled more than two sells
-            player->pieceDeatail[playpiece][3] > 0 )      //must have captured at least one piece  )      //not already in the homepath
-        {
-            printf("------------------------------------------Homemove move\n");
-
-            homeMove(player, playpiece, roll);
-            return 0;
-        }
+        // if(passApporoach(player, playpiece, roll) &&          //can enter to the hoempath
+        //     player->pieceDeatail[playpiece][7] > 2 &&      //must travelled more than two sells
+        //     player->pieceDeatail[playpiece][3] > 0 )      //must have captured at least one piece  )      //not already in the homepath
+        // {
+        //     homeMove(player, playpiece, roll);
+        //     return 0;
+        // }
 
         // Bhawana impact & kotuwa impact+
         if (player->pieceDeatail[playpiece][5] != 1 )
@@ -785,7 +792,7 @@ int standmove(player *player, int roll)
     }
     else
     {
-        printf("Edge------------------------------------------standmove\n");
+        printf("Edge------------------------------------------standardMove\n");
     }
     return 0;
 }
@@ -859,8 +866,10 @@ bool canCaptureAny(int player)
                 if ( // remove comparing same players pieces
                     arrayplayerlist[player] != arrayplayerlist[j] &&
                     // can not catch at starting position
-                    //  player->pieceDeatail[i][2] != YX && player->pieceDeatail[i][2] != BX &&
-                    //  player->pieceDeatail[i][2] != RX && player->pieceDeatail[i][2] != GX &&
+                     arrayplayerlist[player]->pieceDeatail[i][2] != YX &&
+                     arrayplayerlist[player]->pieceDeatail[i][2] != BX &&
+                     arrayplayerlist[player]->pieceDeatail[i][2] != RX &&
+                     arrayplayerlist[player]->pieceDeatail[i][2] != GX &&
                     //check if it in the homepath
                     arrayplayerlist[player]->pieceDeatail[i][8] == -1 &&
                     //arrayplayerlist[player]->pieceDeatail[i][2] != FINISH &&
@@ -1149,8 +1158,7 @@ bool greencatch(int diceValue)
                         player3.pieceDeatail[i][2]+ diceValue != BX &&
                         player3.pieceDeatail[i][2]+ diceValue != RX &&
                         player3.pieceDeatail[i][2]+ diceValue != GX &&
-
-                        player4.pieceDeatail[i][2] + diceValue == arrayplayerlist[j]->pieceDeatail[k][2])
+                        player4.pieceDeatail[i][2]+ diceValue == arrayplayerlist[j]->pieceDeatail[k][2])
                     {
                         player4.pieceDeatail[i][2] = player4.pieceDeatail[i][2] + diceValue;
                         // capturer color , piece captured color, piece,location
@@ -1434,24 +1442,22 @@ void homeMove(player *player, int playpiece, int roll)
         else if(player->pieceDeatail[playpiece][8]+roll == 6)
         {
             player->pieceDeatail[playpiece][8] = player->pieceDeatail[playpiece][8]+roll;
-            printf("%s %c%d====================Piece Wins\n",player->color,player->colorfirst,playpiece+1);
+            printf("%s %c%d Piece Wins\n",player->color,player->colorfirst,playpiece+1);
             player->pieceDeatail[playpiece][2] = FINISH;
-            player->pieceDeatail[playpiece][3] = FINISH;
+            //player->pieceDeatail[playpiece][3] = FINISH;
             player->pieceDeatail[playpiece][8] = FINISH;
             player->finished = player->finished +1;
             player->started = player->started-1;
-            endpieces++;
-                                                                                                                                                                                                                                                                          
+            
             if (player->finished==4)
             {
-                printf("%s %c%d====================Player Wins the game\n",
-                    player->color,player->colorfirst,
-                    playpiece+1);
-            }  
+                player->playernum = finishedPlay;
+                finishedPlay++;
+            }                                                                                                                                                                                                                                                                         
         }
         else
         {
             printf("Can not move must roll %d\n",6 - player->pieceDeatail[playpiece][8]);
         }
-    } 
+    }
 }

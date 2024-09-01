@@ -29,11 +29,11 @@ void gameplay(int);
 
 void baseToStart(player*);
 
-int standmove(player *player, int y);
+int standardMove(player *player, int y);
 
 int selectPlayPiece(player *player,int x);
 
-int checkpos(int);
+//int checkpos(int);
 
 int coinToss();
 
