@@ -42,7 +42,7 @@ extern const char* players[4];
 
 typedef struct player
 {
-    int playernum;          //yellow = 0 , blue = 1 , red = 2 , green = 3,
+    int playerIndex;          //yellow = 0 , blue = 1 , red = 2 , green = 3,
     int inBase;             //Pieces count Base out of 4
     int started;            //Pieces count in Standard Path
     int finished;           //Pieces Count finished the game
@@ -51,7 +51,7 @@ typedef struct player
     int x;                  //Starting position of player
     int o;                  //Apporoach cell of player
     int sixrolled;          //count for rolling six 
-    int *pieceDeatail[4];   //Four size array for hold each piece
+    int *pieceData[4];   //Four size array for hold each piece
 }player;
 
 

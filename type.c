@@ -59,7 +59,7 @@
 // {
 //     //defined by array number
 //     //yellow = 0,blue = 1,red = 2 green = 3,
-//     int playernum;
+//     int playerIndex;
 //     int started;
 //     int inPlay;
 //     int finished;
@@ -68,12 +68,12 @@
 //     int x;
 //     int o;
 //     int sixrolled;
-//     int *pieceDeatail[4];
+//     int *pieceData[4];
 // }player;
 
 // // typedef struct blockad
 // // {
-// //     int playernum;
+// //     int playerIndex;
 // //     int blockadPieces[4];
 // //     int blockaedPosition;
 // //     int pieceCount;
