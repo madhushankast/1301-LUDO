@@ -579,35 +579,23 @@ void printRound()
         {
             if (arrayplayerlist[j]->pieceData[i][2] == BASE)
             {
-                printf("%c%hd -> Base\tcaptured - %hd\tTravelled - %hd\tDirection - %hd\tHome L=%hd\n",
+                printf("%c%hd -> Base\n",
                 arrayplayerlist[j]->colorfirst,
-                arrayplayerlist[j]->pieceData[i][1]+1,
-                arrayplayerlist[j]->pieceData[i][3],
-                arrayplayerlist[j]->pieceData[i][7],
-                arrayplayerlist[j]->pieceData[i][4],
-                arrayplayerlist[j]->pieceData[i][8]);
+                arrayplayerlist[j]->pieceData[i][1]+1);
             }
             else if(arrayplayerlist[j]->pieceData[i][8] >= 6)
             {
-                printf("%c%hd -> Home\tcaptured - %hd\tTravelled - %hd\tDirection - %hd\tHome L= %hd\n",
+                printf("%c%hd -> Home\n",
                 arrayplayerlist[j]->colorfirst,
-                arrayplayerlist[j]->pieceData[i][1]+1,
-                arrayplayerlist[j]->pieceData[i][3],
-                arrayplayerlist[j]->pieceData[i][7],
-                arrayplayerlist[j]->pieceData[i][4],
-                arrayplayerlist[j]->pieceData[i][8]);
+                arrayplayerlist[j]->pieceData[i][1]+1);
 
             }
             else
             {
-                printf("%c%hd is at L%hd\tcaptured - %hd\tTravelled - %hd\tDirection - %hd\tHome L= %hd\n",
+                printf("%c%hd is at L%d\n",
                 arrayplayerlist[j]->colorfirst,
                 arrayplayerlist[j]->pieceData[i][1]+1,
-                arrayplayerlist[j]->pieceData[i][2],
-                arrayplayerlist[j]->pieceData[i][3],
-                arrayplayerlist[j]->pieceData[i][7],
-                arrayplayerlist[j]->pieceData[i][4],
-                arrayplayerlist[j]->pieceData[i][8]);
+                arrayplayerlist[j]->pieceData[i][2]);
             }
         }
         printf("\n");
